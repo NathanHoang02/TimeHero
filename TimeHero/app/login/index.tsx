@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
@@ -8,15 +9,21 @@ const Login = () => {
   const [password, setPassword] = useState('');
 
 
-  const router = useRouter(); // Get router object
+  const router = useRouter(); 
 
-  const handleLoginPress = () => {
+  const handleLoginPress = async () => {
     if (username === 'user' && password === 'password') {
-      router.replace('/(tabs)'); 
+      
+        // Save logged-in status to AsyncStorage
+      await AsyncStorage.setItem('isLoggedIn', 'true'); // Set flag as a string
+      //todo: assign user id to async storage in this step too
+      
+      router.replace('/(tabs)');
     } else {
       alert('Invalid username or password');
     }
   };
+
 
   const handleSignupPress = () => {
     alert('Signup functionality not implemented');
@@ -47,7 +54,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   loginScreen: {
-    // Override default styles if necessary
   },
 });
 

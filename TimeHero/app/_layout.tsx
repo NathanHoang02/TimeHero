@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -16,14 +17,25 @@ export default function RootLayout() {
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
 
-  const router = useRouter(); // Get router object
+  const router = useRouter(); 
 
   useEffect(() => {
+    const checkLoginStatus = async () => {
+      const loggedIn = await AsyncStorage.getItem('isLoggedIn'); 
+      
+      //TODO: rework to make sure that the user's id is also stored in async storage
+      if (loggedIn === 'true') {
+        router.replace('/(tabs)'); 
+      } else {
+        router.replace('/login'); 
+      }
+    };
+
     if (loaded) {
       SplashScreen.hideAsync();
-      router.replace('/login'); // Navigate to login screen after loading
+      checkLoginStatus(); 
     }
-  }, [loaded, router]); // Add router to dependencies
+  }, [loaded, router]); 
 
   if (!loaded) {
     return null;
