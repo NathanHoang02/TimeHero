@@ -23,7 +23,7 @@ export default function RootLayout() {
     const checkLoginStatus = async () => {
       const loggedIn = await AsyncStorage.getItem('isLoggedIn'); 
       
-      //TODO: rework to make sure that the user's id is also stored in async storage
+      //TODO: rework to make sure that the user's id is also stored in async storage and populate it to redux slice
       if (loggedIn === 'true') {
         router.replace('/(tabs)'); 
       } else {

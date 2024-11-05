@@ -26,9 +26,27 @@ export default function TabLayout() {
       <Tabs.Screen
         name="explore"
         options={{
-          title: 'Explore',
+          title: 'Tasks',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+            <TabBarIcon name={focused ? 'clipboard' : 'clipboard-outline'} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="time"
+        options={{
+          title: 'Time',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'hourglass' : 'hourglass-outline'} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="leaderboard"
+        options={{
+          title: 'Leaderboard',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon name={focused ? 'stats-chart' : 'stats-chart-outline'} color={color} />
           ),
         }}
       />
