@@ -15,7 +15,7 @@ export default function TimeScreen() {
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Time</ThemedText>
       </ThemedView>
-      <ThemedText>This is a placeholder for the Time screen.</ThemedText>
+      <ThemedText>This is a placeholder for the Time</ThemedText>
       <Collapsible title="Placeholder Section 1">
         <ThemedText>This section is currently a placeholder.</ThemedText>
       </Collapsible>
