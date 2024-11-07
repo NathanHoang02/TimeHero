@@ -1,3 +1,4 @@
+import { ID_MAP } from '@/constants/ID_MAP';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
@@ -8,22 +9,21 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-
   const router = useRouter(); 
+  
+  const validUsernames: Array<keyof Record<string, string>> = Object.keys(ID_MAP) as Array<keyof Record<string, string>>;
 
   const handleLoginPress = async () => {
-    if (username === 'user' && password === 'password') {
+    if (validUsernames.includes(username) && password === 'password') {
       
-        // Save logged-in status to AsyncStorage
-      await AsyncStorage.setItem('isLoggedIn', 'true'); // Set flag as a string
-      //todo: assign user id to async storage in this step too
+      await AsyncStorage.setItem('isLoggedIn', 'true');
+      await AsyncStorage.setItem('userId', ID_MAP[username])
       
       router.replace('/(tabs)');
     } else {
       alert('Invalid username or password');
     }
   };
-
 
   const handleSignupPress = () => {
     alert('Signup functionality not implemented');
