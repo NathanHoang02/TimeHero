@@ -1,10 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userReducer from './userSlice';
 import { useDispatch } from 'react-redux';
+import { taskReducer } from './taskSlice';
+import leaderboardReducer from './leaderboardSlice';
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
+    tasks: taskReducer,
+    leaderboard: leaderboardReducer,
   },
 });
 

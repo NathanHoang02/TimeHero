@@ -10,7 +10,6 @@ const Login = () => {
   const [password, setPassword] = useState('');
 
   const router = useRouter(); 
-  
   const validUsernames: Array<keyof Record<string, string>> = Object.keys(ID_MAP) as Array<keyof Record<string, string>>;
 
   const handleLoginPress = async () => {
