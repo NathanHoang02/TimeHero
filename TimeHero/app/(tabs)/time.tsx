@@ -1,5 +1,5 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { StyleSheet, Image, Platform } from 'react-native';
+import { StyleSheet, View, Text} from 'react-native';
 
 import { Collapsible } from '@/components/Collapsible';
 import { ExternalLink } from '@/components/ExternalLink';
@@ -12,24 +12,10 @@ export default function TimeScreen() {
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
       headerImage={<Ionicons size={310} name="time" style={styles.headerImage} />}>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Time</ThemedText>
-      </ThemedView>
-      <ThemedText>This is a placeholder for the Time</ThemedText>
-      <Collapsible title="Placeholder Section 1">
-        <ThemedText>This section is currently a placeholder.</ThemedText>
-      </Collapsible>
-      <Collapsible title="Placeholder Section 2">
-        <ThemedText>This section is currently a placeholder.</ThemedText>
-      </Collapsible>
-      <Collapsible title="Placeholder Section 3">
-        <ThemedText>This section is currently a placeholder.</ThemedText>
-      </Collapsible>
-      <Collapsible title="More Information">
-        <ThemedText>
-          More information can be added here later. This is just a placeholder.
-        </ThemedText>
-      </Collapsible>
+      <View style={styles.timerBackground}>
+        {/* Timer Display */}
+        <Text style={styles.timerText}>00:00</Text>
+      </View>
     </ParallaxScrollView>
   );
 }
@@ -41,8 +27,18 @@ const styles = StyleSheet.create({
     left: -35,
     position: 'absolute',
   },
-  titleContainer: {
-    flexDirection: 'row',
-    gap: 8,
+  timerText: {
+    fontSize: 48,
+    fontWeight: 'bold',
+    color: '#808080',
+  },
+  timerBackground: {
+    backgroundColor: '#f0f0f0', 
+    paddingVertical: 10,         
+    paddingHorizontal: 20,       
+    borderRadius: 10,           
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 150,
   },
 });
