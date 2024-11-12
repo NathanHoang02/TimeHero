@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
-// Define types for the leaderboard
 type Player = {
   id: number;
   name: string;
@@ -12,63 +12,98 @@ type LeaderboardProps = {
   players: Player[];
 };
 
-const Leaderboard: React.FC<LeaderboardProps> = ({ players }) => {
-  // Sort players by score in descending order
+const Leaderboard = ({ players }: LeaderboardProps) => {
   const sortedPlayers = [...players].sort((a, b) => b.score - a.score);
 
-  // Render each item
-  const renderPlayer = ({ item, index }: { item: Player; index: number }) => (
-    <View style={styles.row}>
-      <Text style={styles.rank}>{index + 1}</Text>
-      <Text style={styles.name}>{item.name}</Text>
-      <Text style={styles.score}>{item.score}</Text>
-    </View>
-  );
+  const getMedalIcon = (rank: number) => {
+    if (rank === 1) return <Ionicons name="medal" size={30} color="gold" />;
+    if (rank === 2) return <Ionicons name="medal" size={30} color="silver" />;
+    if (rank === 3) return <Ionicons name="medal" size={30} color="brown" />;
+    return null;
+  };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Leaderboard</Text>
-      <FlatList
-        data={sortedPlayers}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={renderPlayer}
-      />
+    <View style={styles.leaderboardContainer}>
+       <View style={styles.headerRow}>
+        <Text style={[styles.headerText, styles.rankHeader]}>Rank</Text>
+        <Text style={[styles.headerText, styles.nameHeader]}>Player Name</Text>
+        <Text style={[styles.headerText, styles.scoreHeader]}>Score</Text>
+      </View>
+      {sortedPlayers.map((player, index) => {
+        const rank = index + 1;
+        return (
+          <View key={player.id} style={styles.playerRow}>
+            <View style={styles.rankContainer}>
+              {getMedalIcon(rank)}
+               {rank > 3 && <Text style={styles.rank}>{rank}</Text>}
+            </View>
+            <Text style={styles.playerName}>{player.name}</Text>
+            <Text style={styles.playerScore}>{player.score}</Text>
+          </View>
+        );
+      })}
     </View>
   );
 };
 
-// Styles for the component
 const styles = StyleSheet.create({
-  container: {
-    padding: 16,
-    backgroundColor: '#fff',
+  leaderboardContainer: {
+    padding: 20,
   },
-  title: {
-    fontSize: 24,
+
+  headerRow: {
+    flexDirection: 'row', // Horizontal layout
+    justifyContent: 'space-between', // Distribute space evenly between columns
+    marginBottom: 10,
+    borderBottomWidth: 2,
+    borderBottomColor: '#fff', // Light border to separate header from the content
+    paddingBottom: 10,
+  },
+  headerText: {
+    fontSize: 18,
     fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 16,
+    color: '#fff', // White color for header text
+    textAlign: 'center', // Center the text within its column
+    flex: 1, // Ensure columns expand evenly
   },
-  row: {
+  rankHeader: {
+    width: 60, // Optional: Adjust width for the "Rank" column
+  },
+  nameHeader: {
+    flex: 3, // Optional: Make "Player Name" column wider
+  },
+  scoreHeader: {
+    width: 80, // Optional: Adjust width for the "Score" column
+  },
+  playerRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 10,
+    alignItems: 'center',
+    marginBottom: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
+    borderBottomColor: '#fff',
+    paddingBottom: 10,
+  },
+  rankContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 10,
   },
   rank: {
     fontSize: 18,
-    width: 30,
-    textAlign: 'center',
+    fontWeight: 'bold',
+    marginLeft: 5,
+    color: '#fff'
   },
-  name: {
-    fontSize: 18,
+  playerName: {
     flex: 1,
-  },
-  score: {
     fontSize: 18,
-    width: 60,
-    textAlign: 'right',
+    fontWeight: '600',
+    color: '#fff'
+  },
+  playerScore: {
+    fontSize: 20,
+    fontWeight: '400',
+    color: '#fff',
   },
 });
 
