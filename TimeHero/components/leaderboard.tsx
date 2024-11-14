@@ -60,19 +60,22 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   headerText: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
     color: '#fff', // White color for header text
     textAlign: 'center', // Center the text within its column
     flex: 1, // Ensure columns expand evenly
   },
   rankHeader: {
+    textAlign: 'left',
     width: 60, // Optional: Adjust width for the "Rank" column
   },
   nameHeader: {
-    flex: 3, // Optional: Make "Player Name" column wider
+    textAlign: 'center',
+    flex: 4, // Optional: Make "Player Name" column wider
   },
   scoreHeader: {
+    textAlign: 'right',
     width: 80, // Optional: Adjust width for the "Score" column
   },
   playerRow: {
@@ -84,26 +87,27 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   rankContainer: {
-    flexDirection: 'row',
+    width: 50, 
     alignItems: 'center',
-    marginRight: 10,
+    justifyContent: 'center',
   },
   rank: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginLeft: 5,
     color: '#fff'
   },
   playerName: {
-    flex: 1,
+    flex: 4,
     fontSize: 18,
     fontWeight: '600',
-    color: '#fff'
+    color: '#fff', 
+    textAlign: 'center', 
   },
   playerScore: {
     fontSize: 20,
     fontWeight: '400',
     color: '#fff',
+    textAlign: 'right',
   },
 });
 
