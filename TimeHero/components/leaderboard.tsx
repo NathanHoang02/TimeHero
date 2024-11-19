@@ -56,13 +56,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between', // Distribute space evenly between columns
     marginBottom: 10,
     borderBottomWidth: 2,
-    borderBottomColor: '#fff', // Light border to separate header from the content
+    borderBottomColor: '#6C8FA3', // Light border to separate header from the content
     paddingBottom: 10,
   },
   headerText: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#fff', // White color for header text
+    color: '#9B8BBE', // White color for header text
     textAlign: 'center', // Center the text within its column
     flex: 1, // Ensure columns expand evenly
   },
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#fff',
+    borderBottomColor: '#6C8FA3',
     paddingBottom: 10,
   },
   rankContainer: {
@@ -94,19 +94,19 @@ const styles = StyleSheet.create({
   rank: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#fff'
+    color: '#9B8BBE'
   },
   playerName: {
     flex: 4,
     fontSize: 18,
     fontWeight: '600',
-    color: '#fff', 
+    color: '#9B8BBE', 
     textAlign: 'center', 
   },
   playerScore: {
     fontSize: 20,
     fontWeight: '400',
-    color: '#fff',
+    color: '#9B8BBE',
     textAlign: 'right',
   },
 });
