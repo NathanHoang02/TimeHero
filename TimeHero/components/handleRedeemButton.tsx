@@ -107,7 +107,7 @@ export default function HandleRedeemButton({ totalTime, setTotalTime }: { totalT
 
       <Modal visible={isModalTwoVisible} transparent={true} animationType="fade">
         <View style={styles.modalBackground}>
-          <View style={styles.modalContainer}>
+          <View style={styles.modalTwoContainer}>
             <Text style={styles.modalTwoTitle}>Countdown Timer</Text>
             <Text style={styles.timerText}>{formatTime(countdownTime)}</Text>
             <TouchableOpacity style={styles.closeIcon} onPress={closeModal2}>
@@ -139,6 +139,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalContainer: {
+    width: '80%',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 10,
+    padding: 20,
+    alignItems: 'center',
+  },
+  modalTwoContainer: {
     width: '80%',
     backgroundColor: '#000000',
     borderRadius: 10,
