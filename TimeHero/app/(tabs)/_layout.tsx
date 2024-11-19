@@ -1,9 +1,9 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
+import { Tabs } from "expo-router";
+import React from "react";
 
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { TabBarIcon } from "@/components/navigation/TabBarIcon";
+import { Colors } from "@/constants/Colors";
+import { useColorScheme } from "@/hooks/useColorScheme";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -11,15 +11,20 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
         headerShown: false,
-      }}>
+        tabBarShowLabel: false,
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
           title: 'Home',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+            <TabBarIcon
+              name={focused ? "home" : "home-outline"}
+              color={color}
+            />
           ),
         }}
       />
@@ -28,7 +33,10 @@ export default function TabLayout() {
         options={{
           title: 'Tasks',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'clipboard' : 'clipboard-outline'} color={color} />
+            <TabBarIcon
+              name={focused ? "clipboard" : "clipboard-outline"}
+              color={color}
+            />
           ),
         }}
       />
@@ -37,7 +45,10 @@ export default function TabLayout() {
         options={{
           title: 'Time',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'hourglass' : 'hourglass-outline'} color={color} />
+            <TabBarIcon
+              name={focused ? "hourglass" : "hourglass-outline"}
+              color={color}
+            />
           ),
         }}
       />
@@ -46,7 +57,10 @@ export default function TabLayout() {
         options={{
           title: 'Leaderboard',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'stats-chart' : 'stats-chart-outline'} color={color} />
+            <TabBarIcon
+              name={focused ? "stats-chart" : "stats-chart-outline"}
+              color={color}
+            />
           ),
         }}
       />
