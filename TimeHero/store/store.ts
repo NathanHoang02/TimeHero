@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { taskReducer } from './taskSlice';
 import leaderboardReducer from './leaderboardSlice';
 
+// Configure the store with reducers
 export const store = configureStore({
   reducer: {
     user: userReducer,
@@ -16,4 +17,6 @@ export const store = configureStore({
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
-export const dispatch = useDispatch();
+// Custom hook for useDispatch with the correct type
+export const useAppDispatch: () => AppDispatch = useDispatch;
+
