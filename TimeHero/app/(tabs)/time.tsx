@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import HandleRedeemButton from '@/components/handleRedeemButton';
-import HandleResetButton from '@/components/handleResetButton';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default function TimeScreen() {
@@ -27,7 +26,6 @@ export default function TimeScreen() {
 
       <View style={styles.buttonContainer}>
         <HandleRedeemButton totalTime={totalTime} setTotalTime={setTotalTime} />
-        <HandleResetButton setTotalTime={setTotalTime} />
       </View>
     </ParallaxScrollView>
   );
