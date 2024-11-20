@@ -1,5 +1,5 @@
-import CircularProgressBar from "@/components/CircularProgressBar";
-import Header from "@/components/Header";
+import CircularProgressBar from "@/components/common/CircularProgressBar";
+import Header from "@/components/common/Header";
 import React from "react";
 import { Dimensions, Image, Platform, StyleSheet } from "react-native";
 
