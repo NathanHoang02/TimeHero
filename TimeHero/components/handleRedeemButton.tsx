@@ -2,12 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Modal, TextInput, StyleSheet } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-export default function HandleRedeemButton({ totalTime, setTotalTime }: { totalTime: number; setTotalTime: (time: number) => void }) {
+export default function HandleRedeemButton({ totalTime }: { totalTime: number }) {
   const [isModalVisible, setModalVisible] = useState(false);
   const [isModalTwoVisible, setModalTwoVisible] = useState(false);
   const [pendingModal2, setPendingModal2] = useState(false);
   const [redeemTime, setRedeemTime] = useState('');
   const [countdownTime, setCountdownTime] = useState(0);
+  const [currentTotalTime, setCurrentTotalTime] = useState(totalTime);
+
+  useEffect(() => {
+    setCurrentTotalTime(totalTime);
+  }, [totalTime]);
 
   const openModal = () => setModalVisible(true);
   const closeModal = () => {
@@ -26,8 +31,8 @@ export default function HandleRedeemButton({ totalTime, setTotalTime }: { totalT
     const redeemMinutes = parseInt(redeemTime) || 0;
     const redeemSeconds = redeemMinutes * 60;
 
-    if (redeemSeconds > 0 && redeemSeconds <= totalTime) {
-      setTotalTime(totalTime - redeemSeconds);
+    if (redeemSeconds > 0 && redeemSeconds <= currentTotalTime) {
+      setCurrentTotalTime(currentTotalTime - redeemSeconds);
       setCountdownTime(redeemSeconds); // Set the countdown time
       closeModal();
     } else {
@@ -37,8 +42,8 @@ export default function HandleRedeemButton({ totalTime, setTotalTime }: { totalT
   };
 
   const handleRedeemAll = () => {
-    setCountdownTime(totalTime); // Set countdown to all available time
-    setTotalTime(0);
+    setCountdownTime(currentTotalTime); // Set countdown to all available time
+    setCurrentTotalTime(0);
     closeModal();
   };
 

@@ -1,17 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect  } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import HandleRedeemButton from '@/components/handleRedeemButton';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-export default function TimeScreen() {
-  const [totalTime, setTotalTime] = useState(20000);
+import { RootState, useAppDispatch } from '@/store/store';
+import { fetchUserInfo } from '@/store/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { useStoreRootState } from 'expo-router/build/global-state/router-store';
 
+export default function TimeScreen() {
   const formatTime = (timeInSeconds: number) => {
     const hours = Math.floor(timeInSeconds / 3600);
     const minutes = Math.floor((timeInSeconds % 3600) / 60);
     return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
   };
+
+  const dispatch = useAppDispatch();
+
+  // Retrieve UserID from Redux
+  const userId = useSelector((state: RootState) => state.user.userId);
+
+  // Get accumulateTime from userinfo
+  const $userAccumulatedTime = useSelector((state: RootState) => state.user.userInfo?.accumulatedTime) ?? null;
+
+  useEffect(() => {
+    if (userId) {
+        dispatch(fetchUserInfo(userId));
+    }
+  }, [dispatch, userId]);
 
   return (
     <ParallaxScrollView
@@ -21,11 +38,11 @@ export default function TimeScreen() {
       <Text style={styles.title}>Time Earned</Text>
 
       <View style={styles.timerBackground}>
-        <Text style={styles.timerText}>{formatTime(totalTime)}</Text>
+        <Text style={styles.timerText}>{formatTime($userAccumulatedTime ?? 0)}</Text>
       </View>
 
       <View style={styles.buttonContainer}>
-        <HandleRedeemButton totalTime={totalTime} setTotalTime={setTotalTime} />
+        <HandleRedeemButton totalTime={$userAccumulatedTime ?? 0}/>
       </View>
     </ParallaxScrollView>
   );
