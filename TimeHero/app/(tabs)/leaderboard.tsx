@@ -49,6 +49,7 @@ export default function LeaderboardScreen() {
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
       headerImage={<Ionicons size={310} name="trophy" style={styles.headerImage} />}>
+      <Text style={styles.title}>Leaderboard</Text>
       <Leaderboard players={players}/>
       <View style={styles.buttonContainer}>
         <Button title="Join Leaderboard" onPress={handleJoinLeaderboard} />
@@ -84,6 +85,13 @@ export default function LeaderboardScreen() {
 }
 
 const styles = StyleSheet.create({
+  title: {
+    fontSize: 40,
+    fontWeight: 'bold',
+    color:'#c70a29',
+    textAlign: 'center',
+    marginBottom: 16,
+  },
   headerImage: {
     color: '#FFFF00',
     bottom: -90,
