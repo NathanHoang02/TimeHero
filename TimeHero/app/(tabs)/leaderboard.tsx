@@ -1,12 +1,15 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { StyleSheet, View, Button, Modal, Text, TouchableOpacity, TextInput} from 'react-native';
+import { StyleSheet, View, Button, Modal, Text, TouchableOpacity, TextInput, Dimensions } from 'react-native';
 import React, { useState } from 'react';
-
 
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import Leaderboard from '@/components/leaderboard';
 import { JoinCodeInput } from '@/components/JoinCodeInput';
 import { GenerateCodeSection } from '@/components/GenerateCodeSection';
+
+const { width } = Dimensions.get('window');
+const scale = width / 375; 
+const scaledSize = (size) => size * scale;
 
 export default function LeaderboardScreen() {
   const [isModalVisible, setModalVisible] = useState(false);
@@ -48,7 +51,7 @@ export default function LeaderboardScreen() {
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={<Ionicons size={310} name="trophy" style={styles.headerImage} />}>
+      headerImage={<Ionicons size={scaledSize(310)} name="trophy" style={styles.headerImage} />}>
       <Text style={styles.title}>Leaderboard</Text>
       <Leaderboard players={players}/>
       <View style={styles.buttonContainer}>
@@ -66,7 +69,7 @@ export default function LeaderboardScreen() {
           <View style={styles.modalContainer}>
             {/* "X" Close Button */}
             <TouchableOpacity style={styles.closeIcon} onPress={closeModal}>
-              <Ionicons name="close" size={24} color="#333" />
+              <Ionicons name="close" size={scaledSize(24)} color="#333" />
             </TouchableOpacity>
 
             <Text style={styles.modalTitle}>Join the Leaderboard</Text>
@@ -86,21 +89,21 @@ export default function LeaderboardScreen() {
 
 const styles = StyleSheet.create({
   title: {
-    fontSize: 40,
+    fontSize: scaledSize(40),
     fontWeight: 'bold',
     color:'#c70a29',
     textAlign: 'center',
-    marginBottom: 16,
+    marginBottom: scaledSize(16),
   },
   headerImage: {
     color: '#FFFF00',
-    bottom: -90,
-    left: -35,
+    bottom: -scaledSize(90),
+    left: -scaledSize(35),
     position: 'absolute',
   },
   buttonContainer: {
-    padding: 16,
-    marginTop: 20,
+    padding: scaledSize(16),
+    marginTop: scaledSize(20),
     alignSelf: 'center',
   },
   modalBackground: {
@@ -110,22 +113,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalContainer: {
-    width: '95%',
+    width: '90%',
     backgroundColor: '#fff',
-    padding: 20,
+    padding: scaledSize(20),
     borderRadius: 10,
     alignItems: 'center',
   },
   closeIcon: {
     position: 'absolute',
-    top: 10,
-    right: 10,
+    top: scaledSize(10),
+    right: scaledSize(10),
   },
   modalTitle: {
-    fontSize: 20,
+    fontSize: scaledSize(20),
     fontWeight: 'bold',
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: scaledSize(20),
   },
   rowContainer: {
     flexDirection: 'row',
@@ -137,6 +140,6 @@ const styles = StyleSheet.create({
     width: 1,
     height: '100%',
     backgroundColor: '#ccc',
-    marginHorizontal: 10,
+    marginHorizontal: scaledSize(10),
   },
 });
