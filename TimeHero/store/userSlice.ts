@@ -25,13 +25,11 @@ const initialState: UserState = {
 
 // Async thunk to fetch user information
 export const fetchUserInfo = createAsyncThunk<UserInfoDTO, string>(
-  "user/fetchUserInfo",
+  "users/fetchUserInfo",
   async (userId, { rejectWithValue }) => {
     try {
-      const response = await makeApiCall.get(
-        `user/${userId}/info`
-      );
-      const rawUserInfo = response.data;
+      const response = await makeApiCall.get(`users/${userId}/info`);
+      const rawUserInfo = response;
 
       // Convert raw response to UserInfoDTO format
       const userInfo: UserInfoDTO = {
@@ -52,11 +50,11 @@ export const fetchUserInfo = createAsyncThunk<UserInfoDTO, string>(
 
 // Async thunk to fetch completed tasks
 export const fetchCompletedTasks = createAsyncThunk<string[], string>(
-  "user/fetchCompletedTasks",
+  "users/fetchCompletedTasks",
   async (userId, { rejectWithValue }) => {
     try {
-      const response = await makeApiCall.get(`/api/user/${userId}/completed`);
-      return response.data.completedTasks;
+      const response = await makeApiCall.get(`user/${userId}/completed`);
+      return response.completedTasks;
     } catch (err: any) {
       return rejectWithValue(err.response?.data || err.message);
     }
@@ -65,11 +63,11 @@ export const fetchCompletedTasks = createAsyncThunk<string[], string>(
 
 // Async thunk to fetch earned screen time
 export const fetchEarnedTime = createAsyncThunk<number, string>(
-  "user/fetchEarnedTime",
+  "users/fetchEarnedTime",
   async (userId, { rejectWithValue }) => {
     try {
       const response = await makeApiCall.get(`/api/user/${userId}/earned-time`);
-      return response.data.earnedTime;
+      return response.earnedTime;
     } catch (err: any) {
       return rejectWithValue(err.response?.data || err.message);
     }
@@ -80,20 +78,23 @@ export const fetchEarnedTime = createAsyncThunk<number, string>(
 export const updateEarnedTime = createAsyncThunk<
   void,
   { userId: string; newTime: number }
->("user/updateEarnedTime", async ({ userId, newTime }, { rejectWithValue }) => {
-  try {
-    await makeApiCall.put(`user/${userId}/earned-time`, { newTime });
-  } catch (err: any) {
-    return rejectWithValue(err.response?.data || err.message);
+>(
+  "users/updateEarnedTime",
+  async ({ userId, newTime }, { rejectWithValue }) => {
+    try {
+      await makeApiCall.put(`user/${userId}/earned-time`, { newTime });
+    } catch (err: any) {
+      return rejectWithValue(err.response?.data || err.message);
+    }
   }
-});
+);
 
 // Async thunk to update completed tasks
 export const updateCompletedTasks = createAsyncThunk<
   void,
   { userId: string; taskIds: string[] }
 >(
-  "user/updateCompletedTasks",
+  "users/updateCompletedTasks",
   async ({ userId, taskIds }, { rejectWithValue }) => {
     try {
       await makeApiCall.put(`/api/user/${userId}/completed`, { taskIds });
@@ -108,14 +109,16 @@ export const joinLeaderboard = createAsyncThunk<
   string,
   { userId: string; leaderboardId: string }
 >(
-  "user/joinLeaderboard",
+  "users/joinLeaderboard",
   async ({ userId, leaderboardId }, { rejectWithValue }) => {
     try {
-      const response = await makeApiCall
-      .put(`/api/user/${userId}/join-leaderboard`, {
-        leaderboardId,
-      });
-      return response.data.message;
+      const response = await makeApiCall.put(
+        `/api/user/${userId}/join-leaderboard`,
+        {
+          leaderboardId,
+        }
+      );
+      return response.message;
     } catch (err: any) {
       return rejectWithValue(err.response?.data || err.message);
     }

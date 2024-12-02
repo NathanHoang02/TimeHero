@@ -20,7 +20,9 @@ export const fetchAvailableTasks = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await makeApiCall.get(`tasks/available`);
-      return response.data as TaskDTO[];
+
+      console.log("response", response)
+      return response as TaskDTO[];
     } catch (error: any) {
       return rejectWithValue(
         error.response?.data?.error || "Failed to fetch tasks"
@@ -42,6 +44,8 @@ const taskSlice = createSlice({
       .addCase(
         fetchAvailableTasks.fulfilled,
         (state, action: PayloadAction<TaskDTO[]>) => {
+
+          console.log("payload", action.payload)
           state.tasks = action.payload;
           state.loading = false;
         }
