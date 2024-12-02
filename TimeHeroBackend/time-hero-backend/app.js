@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const cors = require('cors'); // Import the cors package
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -11,6 +12,13 @@ const taskRoutes = require('./routes/tasks');
 const leaderboardRoutes = require('./routes/leaderboard');
 
 const app = express();
+
+// CORS setup
+app.use(cors({
+  origin: 'http://localhost:8081', // Allow frontend to access this API
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow specific methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Allow these headers
+}));
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade'); // Change 'jade' to 'pug' if you’re using the latest version
@@ -45,4 +53,5 @@ app.use((err, req, res, next) => {
 });
 
 module.exports = app;
+
 

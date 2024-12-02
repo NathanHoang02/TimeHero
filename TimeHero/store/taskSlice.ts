@@ -3,9 +3,6 @@ import { TaskDTO } from "@/constants/TaskDTO";
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { makeApiCall } from "../apiClient";
 
-const API_URL =
-  process.env.REACT_APP_API_URL || "http://localhost:5000/api/tasks";
-
 interface TaskState {
   tasks: TaskDTO[];
   loading: boolean;
@@ -22,7 +19,7 @@ export const fetchAvailableTasks = createAsyncThunk(
   "tasks/fetchAvailableTasks",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await makeApiCall.get(`api/tasks/available`);
+      const response = await makeApiCall.get(`tasks/available`);
       return response.data as TaskDTO[];
     } catch (error: any) {
       return rejectWithValue(

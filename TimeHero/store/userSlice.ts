@@ -29,7 +29,7 @@ export const fetchUserInfo = createAsyncThunk<UserInfoDTO, string>(
   async (userId, { rejectWithValue }) => {
     try {
       const response = await makeApiCall.get(
-        `api/user/${userId}/info`
+        `user/${userId}/info`
       );
       const rawUserInfo = response.data;
 
@@ -82,7 +82,7 @@ export const updateEarnedTime = createAsyncThunk<
   { userId: string; newTime: number }
 >("user/updateEarnedTime", async ({ userId, newTime }, { rejectWithValue }) => {
   try {
-    await makeApiCall.put(`/api/user/${userId}/earned-time`, { newTime });
+    await makeApiCall.put(`user/${userId}/earned-time`, { newTime });
   } catch (err: any) {
     return rejectWithValue(err.response?.data || err.message);
   }

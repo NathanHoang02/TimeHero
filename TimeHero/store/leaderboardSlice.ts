@@ -29,7 +29,7 @@ export const fetchLeaderboard = createAsyncThunk(
   'leaderboard/fetchLeaderboard',
   async (leaderboardId: string, { rejectWithValue }) => {
     try {
-      const response = await makeApiCall.get(`/api/leaderboard/${leaderboardId}`);
+      const response = await makeApiCall.get(`leaderboard/${leaderboardId}`);
       return response.data as UserOnLeaderboard[];
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.error || 'Failed to fetch leaderboard');
@@ -42,7 +42,7 @@ export const joinLeaderboard = createAsyncThunk(
   'leaderboard/joinLeaderboard',
   async ({ userId, leaderboardId }: { userId: string; leaderboardId: string }, { rejectWithValue }) => {
     try {
-      const response = await makeApiCall.post(`/api/leaderboard/${userId}/join`, {
+      const response = await makeApiCall.post(`leaderboard/${userId}/join`, {
         leaderboardId,
       });
       return response.data.message;
