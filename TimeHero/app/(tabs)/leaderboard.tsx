@@ -46,7 +46,7 @@ export default function LeaderboardScreen() {
     return $leaderboardUsers.map((user) => {
       return {
         id: Number.parseInt(user.id),
-        name: user.name ?? 'test',
+        name: user.username ?? 'test',
         score: user.accumulatedTime / 1000,
       }
     })
