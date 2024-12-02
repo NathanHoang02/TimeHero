@@ -1,30 +1,60 @@
 # TimeHero
 
+## About The Project
+
+**Concept**
+Earn Screen Time by Completing Productive Tasks- Productivity App
+
+**Elevator Pitch**
+Imagine an app that helps you take control of your screen time while motivating you to achieve more. You set a limit, and we keep you on track. Want more screen time? Complete beneficial tasks across different categories like fitness, learning, or mindfulness, and earn extra time. Stay focused with built-in tools like timers and notifications. If you leave the app while a task is running, we detect it to keep you honest. Join groups, compare your earned time on a leaderboard, and turn self-improvement into a friendly competition.
+
+**Target Audience**
+FOR (Parents and People Struggling with High Screen Time)
+WHO (Want to manage screen time and boost productivity) 
+TimeHero is a (productivity mobile app)
+THAT (Allows users to earn screen time by completing productive tasks)
+UNLIKE (Existing screen time limiting apps)
+OUR PRODUCT (Rewards users for healthy and productive behaviors by allowing them to earn more screen time through positive actions)
+
+
 **Implementation:**
 Frontend: React Native for cross-platform mobile app development.
 Backend: Node.js with Express, SQLite for data persistence.
 State Management: Redux to manage tasks, user data, and time tracking.
 APIs: RESTful APIs for user info, task progress, and leaderboard updates.
 
+**Key Features**
+Gamified Productivity System
+    - Earn screen time by completing tasks in categories like fitness, learning, or mindfulness. Tasks are rewarded based on completion, encouraging balance and productivity.
+Dynamic Leaderboard 
+    - Friendly competition with friends by comparing earned screen time. 
+Task Categories with Customization
+    - Predefined tasks like "30 minutes outside" or "45 minutes of schoolwork." Option to add or customize tasks to suit individual needs.
+Screen Time Management Tools
+    - Track earned and redeemed screen time. Redeem using a timer-based interface.
+Accountability Features 
+    - App detects when users leave tasks mid-way and prevents progress updates.
+Intuitive User Interface 
+    - Simple, engaging screens like Home, Leaderboard, and Time Screen Pages. Interactive buttons, progress bars, and animations enhance usability.
+
 **Core Features:**
-Earn screen time through productive tasks (fitness, learning, chores).
-  - Motivates users to complete meaningful tasks in exchange for screen time.
-Task dashboard with progress tracking.
-  - Renders user with cost for completion and earned screen time 
-  - Tasks are customizable to align with personal goals
-  - View active and completed tasks. 
-  - Dashboard includes total earned accumulated time
-Redeem screen time or track accumulated time.
-  - Users can view and redeem their total earned screen time.
-Join leaderboards for friendly competition.
-  - Users can generate and join a leaderboard and view a real-time rank system 
+Robust
+    - Database with tables for users, tasks, and leaderboards. API endpoints for fetching user data, tasks, and leaderboard rankings.
+State Management with Redux 
+    - Efficient handling of user data, completed tasks, and screen time accumulation. Real-time updates for key components like the leaderboard and time tracker.
+Customizable Task Framework.
+    - Core logic for defining tasks with properties like time, metric, and steps. Flexibility to add new task types without breaking existing functionality.
+Authentication and User Profiles 
+    - Secure user login and profile management. Track completed tasks, accumulated screen time, and leaderboard participation.
+Gamification Logic 
+    - Algorithms for rewarding screen time based on task completion. Leaderboard logic to rank users by accumulated time.
+
 
 **Video Demonstration**
 
-**Usage and installation guide**
 
 
-  **Project Setup**
+## Project Setup
 1. Clone Repository
    ```bash
    git clone [your-repository-url]
