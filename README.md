@@ -2,51 +2,51 @@
 
 ## About The Project
 
-**Concept**
+**Concept**<br>
 Earn Screen Time by Completing Productive Tasks- Productivity App
 
-**Elevator Pitch**
+**Elevator Pitch**<br>
 Imagine an app that helps you take control of your screen time while motivating you to achieve more. You set a limit, and we keep you on track. Want more screen time? Complete beneficial tasks across different categories like fitness, learning, or mindfulness, and earn extra time. Stay focused with built-in tools like timers and notifications. If you leave the app while a task is running, we detect it to keep you honest. Join groups, compare your earned time on a leaderboard, and turn self-improvement into a friendly competition.
 
-**Target Audience**
-FOR (Parents and People Struggling with High Screen Time)
-WHO (Want to manage screen time and boost productivity) 
-TimeHero is a (productivity mobile app)
-THAT (Allows users to earn screen time by completing productive tasks)
-UNLIKE (Existing screen time limiting apps)
-OUR PRODUCT (Rewards users for healthy and productive behaviors by allowing them to earn more screen time through positive actions)
+**Target Audience**<br>
+FOR (Parents and People Struggling with High Screen Time)<br>
+WHO (Want to manage screen time and boost productivity)<br>
+TimeHero is a (productivity mobile app)<br>
+THAT (Allows users to earn screen time by completing productive tasks)<br>
+UNLIKE (Existing screen time limiting apps)<br>
+OUR PRODUCT (Rewards users for healthy and productive behaviors by allowing them to earn more screen time through positive actions)<br>
 
 
-**Implementation:**
+**Implementation:**<br>
 Frontend: React Native for cross-platform mobile app development.
 Backend: Node.js with Express, SQLite for data persistence.
 State Management: Redux to manage tasks, user data, and time tracking.
 APIs: RESTful APIs for user info, task progress, and leaderboard updates.
 
-**Key Features**
-Gamified Productivity System
+**Key Features**<br>
+1. Gamified Productivity System
     - Earn screen time by completing tasks in categories like fitness, learning, or mindfulness. Tasks are rewarded based on completion, encouraging balance and productivity.
-Dynamic Leaderboard 
+2. Dynamic Leaderboard 
     - Friendly competition with friends by comparing earned screen time. 
-Task Categories with Customization
+3. Task Categories with Customization
     - Predefined tasks like "30 minutes outside" or "45 minutes of schoolwork." Option to add or customize tasks to suit individual needs.
-Screen Time Management Tools
+4. Screen Time Management Tools
     - Track earned and redeemed screen time. Redeem using a timer-based interface.
-Accountability Features 
+5. Accountability Features 
     - App detects when users leave tasks mid-way and prevents progress updates.
-Intuitive User Interface 
+6. Intuitive User Interface 
     - Simple, engaging screens like Home, Leaderboard, and Time Screen Pages. Interactive buttons, progress bars, and animations enhance usability.
 
-**Core Features:**
-Robust
+**Core Features:**<br>
+1. Robust
     - Database with tables for users, tasks, and leaderboards. API endpoints for fetching user data, tasks, and leaderboard rankings.
-State Management with Redux 
+2. State Management with Redux 
     - Efficient handling of user data, completed tasks, and screen time accumulation. Real-time updates for key components like the leaderboard and time tracker.
-Customizable Task Framework.
+3. Customizable Task Framework.
     - Core logic for defining tasks with properties like time, metric, and steps. Flexibility to add new task types without breaking existing functionality.
-Authentication and User Profiles 
+4. Authentication and User Profiles 
     - Secure user login and profile management. Track completed tasks, accumulated screen time, and leaderboard participation.
-Gamification Logic 
+5. Gamification Logic 
     - Algorithms for rewarding screen time based on task completion. Leaderboard logic to rank users by accumulated time.
 
 
@@ -54,7 +54,9 @@ Gamification Logic
 
 
 
-## Project Setup
+## Installation Guide
+
+**Project Setup**
 1. Clone Repository
    ```bash
    git clone [your-repository-url]
@@ -65,7 +67,7 @@ Gamification Logic
    cd .\TimeHero\TimeHero\
    ```
    
-  **Frontend setup**
+**Frontend setup**
 1. Install dependencies
 
    ```bash
@@ -96,7 +98,7 @@ You can start developing by editing the files inside the **app** directory. This
    2. Ensure all dependencies are up-to-date
    3. Scan the QR code above with Expo Go (Android) or the Camera app (iOS)
 
-## Get a fresh project
+**Get a fresh project**
 
 When you're ready, run:
 
