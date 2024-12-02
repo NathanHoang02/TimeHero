@@ -4,9 +4,10 @@ const Leaderboard = {
     getLeaderboard: (leaderboardId) => {
         return new Promise((resolve, reject) => {
             const query = `
-                SELECT u.id, u.accumulatedTime 
-                FROM User u 
-                WHERE u.leaderboardID = ?`;
+                SELECT u.id, u.username, u.accumulatedTime 
+                FROM User u
+                INNER JOIN Leaderboard l ON u.leaderboardID = l.id
+                WHERE l.id = ?`;
             db.all(query, [leaderboardId], (err, rows) => {
                 if (err) return reject(err);
                 resolve(rows);
@@ -26,3 +27,4 @@ const Leaderboard = {
 };
 
 module.exports = Leaderboard;
+
