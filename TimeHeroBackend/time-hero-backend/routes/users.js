@@ -96,4 +96,39 @@ router.put('/:userId/join-leaderboard', async (req, res) => {
     }
 });
 
+// Get username for a user
+router.get('/:userId/username', async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const userInfo = await UserModel.getUserInfo(userId);
+        if (userInfo && userInfo.username) {
+            res.json({ username: userInfo.username });
+        } else {
+            res.status(404).json({ message: 'User not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Update username for a user
+router.put('/:userId/username', async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const { username } = req.body; // Expecting username in the request body
+        if (!username) {
+            return res.status(400).json({ error: 'username is required' });
+        }
+        const changes = await UserModel.updateUsername(userId, username);
+        if (changes) {
+            res.json({ message: 'Username updated successfully' });
+        } else {
+            res.status(404).json({ message: 'User not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 module.exports = router;
+
