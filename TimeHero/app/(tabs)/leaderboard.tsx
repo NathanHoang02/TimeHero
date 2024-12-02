@@ -56,6 +56,8 @@ export default function LeaderboardScreen() {
     if($userLeaderboardId) {
       dispatch(fetchLeaderboard($userLeaderboardId));
     }
+
+    console.log($userLeaderboardId)
   }, [])
   
   return (
