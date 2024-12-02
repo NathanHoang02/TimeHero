@@ -6,6 +6,7 @@ import { RootState } from './store';
 // Define the types
 interface UserOnLeaderboard {
   id: string;
+  name: string;
   accumulatedTime: number;
 }
 
