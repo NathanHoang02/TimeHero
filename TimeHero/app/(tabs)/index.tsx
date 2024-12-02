@@ -4,8 +4,22 @@ import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { fetchUserInfo } from '@/store/userSlice';
+import { RootState, useAppDispatch } from '@/store/store';
+import { ID_MAP } from '@/constants/ID_MAP';
 
 export default function HomeScreen() {
+  const dispatch = useAppDispatch();
+  const $userId = useSelector((state: RootState) => state.user.userInfo?.id) ?? ID_MAP['user'];
+
+
+  useEffect(() => {
+    dispatch(fetchUserInfo($userId))
+  }, [])
+
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}

@@ -10,6 +10,7 @@ import { GenerateCodeSection } from '@/components/GenerateCodeSection';
 import { RootState, useAppDispatch } from '@/store/store';
 import { fetchLeaderboard } from '@/store/leaderboardSlice';
 import { useSelector } from 'react-redux';
+import { joinLeaderboard } from '@/store/userSlice';
 
 export default function LeaderboardScreen() {
   const [isModalVisible, setModalVisible] = useState(false);
@@ -18,6 +19,7 @@ export default function LeaderboardScreen() {
   const dispatch = useAppDispatch();
 
   const $userLeaderboardId = useSelector((state: RootState) => state.user.userInfo?.leaderboardID) ?? null;
+  const $userId = useSelector((state: RootState) => state.user.userInfo?.id) ?? null;
   const $leaderboardUsers = useSelector((state: RootState) => state.leaderboard.users);
   
 
@@ -32,8 +34,14 @@ export default function LeaderboardScreen() {
 
   const handleGenerateCode = () => {
     const newCode = Math.random().toString(36).substr(2, 6).toUpperCase();
-    console.log("Generated Code:", newCode);
     alert(`Generated Code: ${newCode}`); // Or handle display as needed
+
+    const leaderboardTarget = {
+      userId: $userId ?? '',
+      leaderboardId: newCode
+    }
+
+    dispatch(joinLeaderboard(leaderboardTarget))
   };
 
   type Player = {
@@ -56,8 +64,6 @@ export default function LeaderboardScreen() {
     if($userLeaderboardId) {
       dispatch(fetchLeaderboard($userLeaderboardId));
     }
-
-    console.log($userLeaderboardId)
   }, [])
   
   return (
