@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
 import { UserInfoDTO } from "@/constants/UserInfoDTO";
+import { makeApiCall } from "@/apiClient";
 
 // Define the initial state of the slice
 interface UserState {
@@ -28,8 +28,8 @@ export const fetchUserInfo = createAsyncThunk<UserInfoDTO, string>(
   "user/fetchUserInfo",
   async (userId, { rejectWithValue }) => {
     try {
-      const response = await axios.get(
-        `http://localhost:3000/api/user/${userId}/info`
+      const response = await makeApiCall.get(
+        `api/user/${userId}/info`
       );
       const rawUserInfo = response.data;
 
@@ -55,7 +55,7 @@ export const fetchCompletedTasks = createAsyncThunk<string[], string>(
   "user/fetchCompletedTasks",
   async (userId, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`/api/user/${userId}/completed`);
+      const response = await makeApiCall.get(`/api/user/${userId}/completed`);
       return response.data.completedTasks;
     } catch (err: any) {
       return rejectWithValue(err.response?.data || err.message);
@@ -68,7 +68,7 @@ export const fetchEarnedTime = createAsyncThunk<number, string>(
   "user/fetchEarnedTime",
   async (userId, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`/api/user/${userId}/earned-time`);
+      const response = await makeApiCall.get(`/api/user/${userId}/earned-time`);
       return response.data.earnedTime;
     } catch (err: any) {
       return rejectWithValue(err.response?.data || err.message);
@@ -82,7 +82,7 @@ export const updateEarnedTime = createAsyncThunk<
   { userId: string; newTime: number }
 >("user/updateEarnedTime", async ({ userId, newTime }, { rejectWithValue }) => {
   try {
-    await axios.put(`/api/user/${userId}/earned-time`, { newTime });
+    await makeApiCall.put(`/api/user/${userId}/earned-time`, { newTime });
   } catch (err: any) {
     return rejectWithValue(err.response?.data || err.message);
   }
@@ -96,7 +96,7 @@ export const updateCompletedTasks = createAsyncThunk<
   "user/updateCompletedTasks",
   async ({ userId, taskIds }, { rejectWithValue }) => {
     try {
-      await axios.put(`/api/user/${userId}/completed`, { taskIds });
+      await makeApiCall.put(`/api/user/${userId}/completed`, { taskIds });
     } catch (err: any) {
       return rejectWithValue(err.response?.data || err.message);
     }
@@ -111,7 +111,8 @@ export const joinLeaderboard = createAsyncThunk<
   "user/joinLeaderboard",
   async ({ userId, leaderboardId }, { rejectWithValue }) => {
     try {
-      const response = await axios.put(`/api/user/${userId}/join-leaderboard`, {
+      const response = await makeApiCall
+      .put(`/api/user/${userId}/join-leaderboard`, {
         leaderboardId,
       });
       return response.data.message;

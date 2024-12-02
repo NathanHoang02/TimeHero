@@ -2,6 +2,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { RootState } from './store';
+import { makeApiCall } from '@/apiClient';
 
 // Define the types
 interface UserOnLeaderboard {
@@ -29,7 +30,7 @@ export const fetchLeaderboard = createAsyncThunk(
   'leaderboard/fetchLeaderboard',
   async (leaderboardId: string, { rejectWithValue }) => {
     try {
-      const response = await axios.get<UserOnLeaderboard[]>(`http://localhost:5000/api/leaderboard/${leaderboardId}`);
+      const response = await makeApiCall.get<UserOnLeaderboard[]>(`http://localhost:5000/api/leaderboard/${leaderboardId}`);
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.error || 'Failed to fetch leaderboard');
@@ -42,7 +43,7 @@ export const joinLeaderboard = createAsyncThunk(
   'leaderboard/joinLeaderboard',
   async ({ userId, leaderboardId }: { userId: string; leaderboardId: string }, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`http://localhost:5000/api/leaderboard/${userId}/join`, {
+      const response = await makeApiCall.post(`api/leaderboard/${userId}/join`, {
         leaderboardId,
       });
       return response.data.message;
