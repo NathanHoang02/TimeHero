@@ -37,13 +37,11 @@ const hardcodedTasks = [
 ];
 
 const TasksScreen = () => {
-  const { tasks, loading, error } = useSelector((state: RootState) => state.tasks);
+  const { tasks, loading, error } = useSelector((state: RootState) => state.tasks); // Select the tasks from Redux
   const dispatch = useAppDispatch();
 
-  // useEffect for fetching tasks from API - commented out for now
   useEffect(() => {
-    // Uncomment this line to use the fetchAvailableTasks async thunk
-    dispatch(fetchAvailableTasks());
+    dispatch(fetchAvailableTasks()); // Dispatch action to fetch tasks from the API
   }, [dispatch]);
 
   // Display loading indicator if API call is in progress
@@ -56,20 +54,26 @@ const TasksScreen = () => {
   //   return <Text style={styles.error}>{error}</Text>;
   // }
 
-  // Use hardcoded tasks for now. Replace `hardcodedTasks` with `tasks` after testing the API.
-  const taskList = hardcodedTasks; // Change to `tasks` after verifying the API connection
-
+  // Render the tasks fetched from the API
   return (
     <View style={styles.container}>
       <FlatList
-        data={taskList}
-        keyExtractor={(item) => item.id}
+        data={tasks} // Use the tasks fetched from Redux
+        keyExtractor={(item) => item.id.toString()} // Ensure `id` is a string for FlatList keyExtractor
         renderItem={({ item }) => (
           <View style={styles.taskItem}>
             <Text style={styles.label}>{item.label}</Text>
             <Text>Type: {item.taskType}</Text>
             <Text>Metric: {item.metric ?? 'N/A'}</Text>
             <Text>Time: {item.time ? `${item.time} seconds` : 'N/A'}</Text>
+            {item.steps && item.steps.length > 0 && (
+              <View>
+                <Text style={styles.stepsLabel}>Steps:</Text>
+                {item.steps.map((step, index) => (
+                  <Text key={index}>{index + 1}. {step}</Text>
+                ))}
+              </View>
+            )}
           </View>
         )}
       />
@@ -95,6 +99,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
   },
+  stepsLabel: {
+    fontWeight: 'bold',
+    marginTop: 8,
+  },
   error: {
     color: 'red',
     textAlign: 'center',
@@ -103,3 +111,4 @@ const styles = StyleSheet.create({
 });
 
 export default TasksScreen;
+
