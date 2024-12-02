@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Create an axios instance with a hardcoded base URL
 const apiClient = axios.create({
-  baseURL: "https://your-api-base-url.com", // Hardcoded base URL
+  baseURL: "https://localhost:3000/", // Hardcoded base URL
 });
 
 // Wrapper for axios to support HTTP methods
