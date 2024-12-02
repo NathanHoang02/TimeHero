@@ -20,7 +20,7 @@ const Leaderboard = {
             const query = `INSERT INTO Leaderboard (id, joinCode) VALUES (?, ?)`;
             db.run(query, [leaderboardId, joinCode], function (err) {
                 if (err) return reject(err);
-                resolve(this.lastID); // Returns the inserted row ID
+                resolve(this.lastID);
             });
         });
     }
