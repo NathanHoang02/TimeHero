@@ -5,15 +5,33 @@ import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 
+import { TutorialProvider, useTutorial } from '@/components/LoginTutorial';
+import Slideshow from '@/components/LoginTutorial';
+
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const colorScheme = useColorScheme() as 'light' | 'dark';
+
+  return (
+    <TutorialProvider>
+      <LayoutContent colorScheme={colorScheme} />
+    </TutorialProvider>
+  );
+}
+
+const LayoutContent: React.FC<{ colorScheme: 'light' | 'dark' }> = ({ colorScheme }) => {
+  const { tutorialStatus, endTutorial } = useTutorial();
+
+  if (tutorialStatus) {
+    return <Slideshow endTutorial={endTutorial} />;
+  }
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: Colors[colorScheme].tint,
         headerShown: false,
-      }}>
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
@@ -52,4 +70,4 @@ export default function TabLayout() {
       />
     </Tabs>
   );
-}
+};
