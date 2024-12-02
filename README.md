@@ -30,7 +30,8 @@ Join leaderboards for friendly competition.
    git clone [your-repository-url]
    ```
 
-2. ```bash
+2. Change Directory
+   ```bash
    cd .\TimeHero\TimeHero\
    ```
    
@@ -60,8 +61,8 @@ You can start developing by editing the files inside the **app** directory. This
    Press 'w' in the terminal
 
 4. Option: Expo Go
-   Prerequisites
-   1. Download Expo Go on mobile phone
+   1. Prerequisites:
+      1. Download Expo Go on mobile phone
    2. Ensure all dependencies are up-to-date
    3. Scan the QR code above with Expo Go (Android) or the Camera app (iOS)
 
