@@ -11,41 +11,6 @@ import {
 } from "react-native";
 import { useSelector } from "react-redux";
 
-// Hardcoded list of tasks for testing
-const hardcodedTasks = [
-  {
-    id: "1",
-    time: 300, // 5 minutes
-    metric: 10,
-    completionType: "timer",
-    label: "Read a Book",
-    steps: ["Find a book", "Read for 10 minutes", "Summarize what you read"],
-    taskType: "Reading",
-  },
-  {
-    id: "2",
-    time: 600, // 10 minutes
-    metric: 20,
-    completionType: "timer",
-    label: "Exercise",
-    steps: ["Warm-up", "Do push-ups", "Cool down"],
-    taskType: "Workout",
-  },
-  {
-    id: "3",
-    time: null,
-    metric: null,
-    completionType: "manual",
-    label: "Meditation",
-    steps: [
-      "Find a quiet place",
-      "Set a timer for 10 minutes",
-      "Focus on your breathing",
-    ],
-    taskType: "Mindfulness",
-  },
-];
-
 const TasksScreen = () => {
   const $tasks = useSelector((state: RootState) => state.tasks.tasks); // Select the tasks from Redux
   const dispatch = useAppDispatch();
@@ -53,10 +18,6 @@ const TasksScreen = () => {
   useEffect(() => {
     dispatch(fetchAvailableTasks()); // Dispatch action to fetch tasks from the API
   }, []);
-
-  useEffect(() => {
-    console.log($tasks);
-  }, [$tasks]);
 
   return (
     <View style={styles.container} id="checkforidhere">
@@ -72,11 +33,11 @@ const TasksScreen = () => {
             {item.steps && item.steps.length > 0 && (
               <View>
                 <Text style={styles.stepsLabel}>Steps:</Text>
-                {/* {item.steps.map((step, index) => (
+                {item.steps.map((step, index) => (
                   <Text key={index}>
                     {index + 1}. {step}
                   </Text>
-                ))} */}
+                ))}
               </View>
             )}
           </View>

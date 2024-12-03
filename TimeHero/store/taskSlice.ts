@@ -2,6 +2,7 @@
 import { TaskDTO } from "@/constants/TaskDTO";
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { makeApiCall } from "../apiClient";
+import { CompletionType } from "@/constants/CompletionType";
 
 interface TaskState {
   tasks: TaskDTO[];
@@ -15,14 +16,23 @@ const initialState: TaskState = {
   error: null,
 };
 
+type receivedTaskDTO = {
+  id: string;
+  time: number | null;
+  metric: number | null;
+  completionType: CompletionType;
+  label: string;
+  steps: string;
+  taskType: string;
+};
+
 export const fetchAvailableTasks = createAsyncThunk(
   "tasks/fetchAvailableTasks",
   async (_, { rejectWithValue }) => {
     try {
       const response = await makeApiCall.get(`tasks/available`);
 
-      console.log("response", response)
-      return response as TaskDTO[];
+      return response as receivedTaskDTO[];
     } catch (error: any) {
       return rejectWithValue(
         error.response?.data?.error || "Failed to fetch tasks"
@@ -43,10 +53,17 @@ const taskSlice = createSlice({
       })
       .addCase(
         fetchAvailableTasks.fulfilled,
-        (state, action: PayloadAction<TaskDTO[]>) => {
+        (state, action: PayloadAction<receivedTaskDTO[]>) => {
+          const taskWithParsedSteps = action.payload.map((returnedTask) => {
+            return {
+              ...returnedTask,
+              steps: JSON.parse(returnedTask.steps),
+            };
+          });
 
-          console.log("payload", action.payload)
-          state.tasks = action.payload;
+          console.log(taskWithParsedSteps);
+
+          state.tasks = taskWithParsedSteps;
           state.loading = false;
         }
       )

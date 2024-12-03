@@ -11,10 +11,10 @@ import {
 } from "react-native";
 import React, { useEffect, useMemo, useState } from "react";
 
-import ParallaxScrollView from "@/components/ParallaxScrollView";
-import Leaderboard from "@/components/leaderboard";
-import { JoinCodeInput } from "@/components/JoinCodeInput";
-import { GenerateCodeSection } from "@/components/GenerateCodeSection";
+import ParallaxScrollView from "@/components/common/ParallaxScrollView";
+import Leaderboard from "@/components/PageModules/LeaderboardPage/leaderboard";
+import { JoinCodeInput } from "@/components/PageModules/LeaderboardPage/JoinCodeInput";
+import { GenerateCodeSection } from "@/components/PageModules/LeaderboardPage/GenerateCodeSection";
 import { RootState, useAppDispatch } from "@/store/store";
 import { fetchLeaderboard } from "@/store/leaderboardSlice";
 import { useSelector } from "react-redux";

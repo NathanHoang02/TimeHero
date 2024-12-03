@@ -6,7 +6,7 @@ const Header = () => {
     <div style={styles.headerContainer}>
       <p style={styles.text}>TimeHero</p>
       <Image
-        source={require("../assets/images/timeHeroLogo.png")} // Image URL or local path
+        source={require("../../assets/images/timeHeroLogo.png")} // Image URL or local path
         style={styles.image} // Apply styles to the image
         resizeMode="cover" // Controls how the image is scaled (cover, contain, stretch, etc.)
       />

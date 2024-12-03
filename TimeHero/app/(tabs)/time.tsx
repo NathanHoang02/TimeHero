@@ -1,7 +1,7 @@
 import React, { useState, useEffect  } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import HandleRedeemButton from '@/components/handleRedeemButton';
+import ParallaxScrollView from '@/components/common/ParallaxScrollView';
+import HandleRedeemButton from '@/components/PageModules/TimePage/handleRedeemButton';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 import { RootState, useAppDispatch } from '@/store/store';
