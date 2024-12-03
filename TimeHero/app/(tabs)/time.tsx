@@ -59,7 +59,7 @@ export default function TimeScreen() {
 
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
+      headerBackgroundColor={{ light: "#8766E5", dark: "#8766E5" }}
       headerImage={
         <Ionicons size={310} name="time" style={styles.headerImage} />
       }
@@ -80,12 +80,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 40,
     fontWeight: 'bold',
-    color:'#c70a29',
+    color:'#8766E5',
     textAlign: 'center',
     marginBottom: 16,
   },
   headerImage: {
-    color: "#808080",
+    color: "#fff",
     bottom: -90,
     left: -35,
     position: "absolute",
@@ -93,10 +93,10 @@ const styles = StyleSheet.create({
   timerText: {
     fontSize: 48,
     fontWeight: "bold",
-    color: "#808080",
+    color: "black",
   },
   timerBackground: {
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "#E0E0F2",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 10,

@@ -99,7 +99,7 @@ export default function LeaderboardScreen() {
 
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
+      headerBackgroundColor={{ light: "#8766E5", dark: "#8766E5" }}
       headerImage={
         <Ionicons size={310} name="trophy" style={styles.headerImage} />
       }
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     marginBottom: scaledSize(16),
   },
   headerImage: {
-    color: "#FFFF00",
+    color: "#E0E0F2",
     bottom: -scaledSize(90),
     left: -scaledSize(35),
     position: "absolute",

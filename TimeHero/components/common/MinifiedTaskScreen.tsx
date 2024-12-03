@@ -62,7 +62,7 @@ const MinifiedTasksScreen = () => {
             <Button
               title="Start Task"
               onPress={() => openModal(item)}
-              color="#835352"
+              color="#8766E5"
             />
           </View>
         )}
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   taskItem: {
     padding: 12,
     marginVertical: 6,
-    backgroundColor: "#fff",
+    backgroundColor: "#E0E0F2",
     borderRadius: 8,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },

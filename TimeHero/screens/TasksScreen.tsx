@@ -91,7 +91,7 @@ const TasksScreen = () => {
               {item.time ? formatTime(item.time) : "N/A"}
             </Text>
 
-            <Button title="Select Task" onPress={() => openModal(item)} />
+            <Button title="Select Task" color="#8766E5" onPress={() => openModal(item)} />
           </View>
         )}
         ListEmptyComponent={
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     borderRadius: 8,
     gap: 10,
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "#E0E0F2",
     borderColor: "#ddd",
     borderWidth: 1,
   },
