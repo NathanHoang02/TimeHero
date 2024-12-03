@@ -7,50 +7,85 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
+  Dimensions,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
-import ParallaxScrollView from "@/components/common/ParallaxScrollView";
-import Leaderboard from "@/components/PageModules/LeaderboardPage/leaderboard";
-import { JoinCodeInput } from "@/components/PageModules/LeaderboardPage/JoinCodeInput";
-import { GenerateCodeSection } from "@/components/PageModules/LeaderboardPage/GenerateCodeSection";
+import ParallaxScrollView from "@/components/ParallaxScrollView";
+import Leaderboard from "@/components/leaderboard";
+import { JoinCodeInput } from "@/components/JoinCodeInput";
+import { GenerateCodeSection } from "@/components/GenerateCodeSection";
+import { RootState, useAppDispatch } from "@/store/store";
+import { fetchLeaderboard } from "@/store/leaderboardSlice";
+import { useSelector } from "react-redux";
+import { fetchUserInfo, joinLeaderboard } from "@/store/userSlice";
 
 export default function LeaderboardScreen() {
   const [isModalVisible, setModalVisible] = useState(false);
   const [joinCode, setJoinCode] = useState("");
 
+  const dispatch = useAppDispatch();
+
+  const $userLeaderboardId =
+    useSelector((state: RootState) => state.user.userInfo?.leaderboardID) ??
+    null;
+  const $userId =
+    useSelector((state: RootState) => state.user.userInfo?.id) ?? null;
+  const $leaderboardUsers = useSelector(
+    (state: RootState) => state.leaderboard.users
+  );
+
+  const $userAccumulatedTime =
+    useSelector((state: RootState) => state.user.userInfo?.accumulatedTime) ??
+    null;
   const handleJoinLeaderboard = () => setModalVisible(true);
   const closeModal = () => setModalVisible(false);
 
   const handleJoin = () => {
-    console.log("Join Code Entered:", joinCode);
     setModalVisible(false);
+
+    const leaderboardTarget = {
+      userId: $userId ?? "",
+      leaderboardJoinCode: joinCode,
+    };
+
+    dispatch(joinLeaderboard(leaderboardTarget));
+    dispatch(fetchUserInfo(leaderboardTarget.userId));
   };
 
   const handleGenerateCode = () => {
     const newCode = Math.random().toString(36).substr(2, 6).toUpperCase();
-    console.log("Generated Code:", newCode);
-    alert(`Generated Code: ${newCode}`); // Or handle display as needed
+
+    const leaderboardTarget = {
+      userId: $userId ?? "",
+      leaderboardJoinCode: newCode,
+    };
+
+    dispatch(joinLeaderboard(leaderboardTarget));
+    dispatch(fetchUserInfo(leaderboardTarget.userId));
   };
 
   type Player = {
-    id: number;
+    id: string;
     name: string;
     score: number;
   };
 
-  const players: Player[] = [
-    { id: 1, name: "Alice", score: 120 },
-    { id: 2, name: "Bob", score: 95 },
-    { id: 3, name: "Charlie", score: 110 },
-    { id: 4, name: "David", score: 85 },
-    { id: 5, name: "Eve", score: 130 },
-    { id: 6, name: "Frank", score: 90 },
-    { id: 7, name: "Grace", score: 105 },
-    { id: 8, name: "Hank", score: 75 },
-    { id: 9, name: "Ivy", score: 115 },
-    { id: 10, name: "Jack", score: 100 },
-  ];
+  const playersOnLeaderboard: Player[] = useMemo(() => {
+    return $leaderboardUsers.map((user) => {
+      return {
+        id: user.id,
+        name: user.username ?? "test",
+        score: user.accumulatedTime / 1000,
+      };
+    });
+  }, [$leaderboardUsers]);
+
+  useEffect(() => {
+    if ($userLeaderboardId) {
+      dispatch(fetchLeaderboard($userLeaderboardId));
+    }
+  }, [$userLeaderboardId]);
 
   return (
     <ParallaxScrollView
@@ -59,7 +94,7 @@ export default function LeaderboardScreen() {
         <Ionicons size={310} name="trophy" style={styles.headerImage} />
       }
     >
-      <Leaderboard players={players} />
+      <Leaderboard players={playersOnLeaderboard} />
       <View style={styles.buttonContainer}>
         <Button title="Join Leaderboard" onPress={handleJoinLeaderboard} />
       </View>
@@ -75,7 +110,7 @@ export default function LeaderboardScreen() {
           <View style={styles.modalContainer}>
             {/* "X" Close Button */}
             <TouchableOpacity style={styles.closeIcon} onPress={closeModal}>
-              <Ionicons name="close" size={24} color="#333" />
+              <Ionicons name="close" size={scaledSize(24)} color="#333" />
             </TouchableOpacity>
 
             <Text style={styles.modalTitle}>Join the Leaderboard</Text>
@@ -97,17 +132,30 @@ export default function LeaderboardScreen() {
   );
 }
 
+
+
+const { width } = Dimensions.get('window');
+const scale = width / 375; 
+const scaledSize = (size: number) => size * scale;
+
 const styles = StyleSheet.create({
+  title: {
+    fontSize: scaledSize(40),
+    fontWeight: 'bold',
+    color:'#c70a29',
+    textAlign: 'center',
+    marginBottom: scaledSize(16),
+  },
   headerImage: {
-    color: "#FFFF00",
-    bottom: -90,
-    left: -35,
-    position: "absolute",
+    color: '#FFFF00',
+    bottom: -scaledSize(90),
+    left: -scaledSize(35),
+    position: 'absolute',
   },
   buttonContainer: {
-    padding: 16,
-    marginTop: 20,
-    alignSelf: "center",
+    padding: scaledSize(16),
+    marginTop: scaledSize(20),
+    alignSelf: 'center',
   },
   modalBackground: {
     flex: 1,
@@ -116,22 +164,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalContainer: {
-    width: "95%",
-    backgroundColor: "#fff",
-    padding: 20,
+    width: '90%',
+    backgroundColor: '#fff',
+    padding: scaledSize(20),
     borderRadius: 10,
     alignItems: "center",
   },
   closeIcon: {
-    position: "absolute",
-    top: 10,
-    right: 10,
+    position: 'absolute',
+    top: scaledSize(10),
+    right: scaledSize(10),
   },
   modalTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    textAlign: "center",
-    marginBottom: 20,
+    fontSize: scaledSize(20),
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: scaledSize(20),
   },
   rowContainer: {
     flexDirection: "row",
@@ -141,8 +189,8 @@ const styles = StyleSheet.create({
   },
   verticalDivider: {
     width: 1,
-    height: "100%",
-    backgroundColor: "#ccc",
-    marginHorizontal: 10,
+    height: '100%',
+    backgroundColor: '#ccc',
+    marginHorizontal: scaledSize(10),
   },
 });

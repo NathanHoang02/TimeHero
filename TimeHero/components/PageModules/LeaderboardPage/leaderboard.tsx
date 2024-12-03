@@ -1,9 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
+import { ID_MAP } from '@/constants/ID_MAP';
 
 type Player = {
-  id: number;
+  id: string;
   name: string;
   score: number;
 };
@@ -14,6 +17,9 @@ type LeaderboardProps = {
 
 const Leaderboard = ({ players }: LeaderboardProps) => {
   const sortedPlayers = [...players].sort((a, b) => b.score - a.score);
+
+  const $userId = useSelector((state: RootState) => state.user.userInfo?.id) ?? ID_MAP['user'];
+
 
   const getMedalIcon = (rank: number) => {
     if (rank === 1) return <Ionicons name="medal" size={30} color="gold" />;
@@ -32,12 +38,12 @@ const Leaderboard = ({ players }: LeaderboardProps) => {
       {sortedPlayers.map((player, index) => {
         const rank = index + 1;
         return (
-          <View key={player.id} style={styles.playerRow}>
+          <View key={index} style={styles.playerRow}>
             <View style={styles.rankContainer}>
               {getMedalIcon(rank)}
                {rank > 3 && <Text style={styles.rank}>{rank}</Text>}
             </View>
-            <Text style={styles.playerName}>{player.name}</Text>
+            <Text style={styles.playerName}>{player.name}{(player.id === $userId) ? ' (me)' : ''}</Text>
             <Text style={styles.playerScore}>{player.score}</Text>
           </View>
         );
