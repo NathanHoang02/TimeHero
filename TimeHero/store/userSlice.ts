@@ -49,12 +49,12 @@ export const fetchUserInfo = createAsyncThunk<UserInfoDTO, string>(
 );
 
 // Async thunk to fetch completed tasks
-export const fetchCompletedTasks = createAsyncThunk<string[], string>(
+export const fetchCompletedTasks = createAsyncThunk<string, string>(
   "users/fetchCompletedTasks",
   async (userId, { rejectWithValue }) => {
     try {
       const response = await makeApiCall.get(`users/${userId}/completed`);
-      return response.completedTasks;
+      return response;
     } catch (err: any) {
       return rejectWithValue(err.response?.data || err.message);
     }
@@ -161,9 +161,9 @@ const userSlice = createSlice({
       })
       .addCase(
         fetchCompletedTasks.fulfilled,
-        (state, action: PayloadAction<string[]>) => {
+        (state, action: PayloadAction<string>) => {
           state.status = "succeeded";
-          state.completedTasks = action.payload;
+          state.completedTasks = JSON.parse(action.payload);
         }
       )
       .addCase(fetchCompletedTasks.rejected, (state, action) => {
