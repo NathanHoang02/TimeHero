@@ -1,6 +1,7 @@
 import React from "react";
 import { Dimensions, Image, StyleSheet, View, Text } from "react-native";
 import CircularProgressBar from "@/components/common/CircularProgressBar";
+
 const Header = () => {
   return (
     <View style={styles.container}>
@@ -20,15 +21,16 @@ const Header = () => {
         </View>
         <View style={styles.infoColumn}>
           <Text style={styles.infoText}>Percent of Completion:</Text>
-          <CircularProgressBar completion={75} size={30} hideCenterLabel={false} />
+          <View style={styles.progressContainer}>
+            <CircularProgressBar completion={75} size={30} hideCenterLabel={true} />
+            <Text style={styles.percentageText}>75%</Text>
+          </View>
         </View>
       </View>
       <View style={styles.separator} />
     </View>
   );
 };
-
-
 
 const { width, height } = Dimensions.get('window');
 
@@ -84,6 +86,16 @@ const styles = StyleSheet.create({
     color: "black", // Text color is black
     fontWeight: "bold", // Make it bold for emphasis
     marginTop: 2, // Add some space below "Time Earned:"
+  },
+  progressContainer: {
+    flexDirection: "row", // Align CircularProgressBar and label in a row
+    alignItems: "center", // Vertically center both elements
+  },
+  percentageText: {
+    marginLeft: 10, // Space between the progress bar and percentage text
+    fontSize: 14,
+    color: "black",
+    fontWeight: "bold",
   },
 });
 
