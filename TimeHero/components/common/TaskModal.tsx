@@ -18,6 +18,7 @@ import {
   updateEarnedTime,
 } from "@/store/userSlice";
 import { RootState, useAppDispatch } from "@/store/store";
+import { fetchAvailableTasks } from "@/store/taskSlice";
 
 interface TaskModalProps {
   task: TaskDTO;
@@ -100,9 +101,10 @@ const TaskModal: React.FC<TaskModalProps> = ({ task, isVisible, onClose }) => {
           dispatch(
             updateEarnedTime({ userId: $userId, newTime: updatedEarnedTime })
           );
-      }).then(() => {
+      }).finally(() => {
           // Refetch user data to ensure state consistency
           dispatch(fetchUserInfo($userId));
+          dispatch(fetchAvailableTasks())
       })
     }
 

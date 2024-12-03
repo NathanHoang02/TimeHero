@@ -4,8 +4,9 @@ import { useSelector } from "react-redux";
 import { useAppDispatch, RootState } from "@/store/store";
 import TaskModal from "@/components/common/TaskModal";
 import { TaskType } from "@/constants/TaskType";
-import { fetchCompletedTasks } from "@/store/userSlice";
+import { fetchCompletedTasks, fetchUserInfo } from "@/store/userSlice";
 import { fetchAvailableTasks, setActiveFilter } from "@/store/taskSlice"; // Import the action to set active filter
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const TasksScreen = () => {
   const $tasks = useSelector((state: RootState) => state.tasks.tasks);
@@ -24,6 +25,22 @@ const TasksScreen = () => {
     dispatch(fetchAvailableTasks());
     if ($userId) dispatch(fetchCompletedTasks($userId));
   }, [dispatch, $userId]);
+
+  useEffect(() => {
+    const getUserIdFromStorage = async () => {
+      try {
+        const storedUserId = await AsyncStorage.getItem('userId');
+        if (storedUserId) {
+          // If a userId is found, dispatch the fetchUserInfo action
+          dispatch(fetchUserInfo(storedUserId));
+        }
+      } catch (error) {
+        console.error('Failed to load userId from AsyncStorage:', error);
+      }
+    };
+
+    getUserIdFromStorage();
+  }, [dispatch]);
 
   const finalizedTaskList = useMemo(() => {
     const nonCompletedTasks = $tasks.filter(

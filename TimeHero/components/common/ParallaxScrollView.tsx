@@ -14,6 +14,7 @@ import { TaskType } from "@/constants/TaskType";
 import { setActiveFilter } from "@/store/taskSlice";
 import { FAB, Text } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
+import { Colors } from "@/constants/Colors";
 
 const HEADER_HEIGHT = 250;
 
@@ -188,7 +189,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 16,
     right: 16,
-    backgroundColor: "blue",
+    backgroundColor: Colors["light"].tint,
     zIndex: 3,
   },
   filterButtonsContainer: {
@@ -205,7 +206,7 @@ const styles = StyleSheet.create({
   },
   filterButtonFAB: {
     marginBottom: 5,
-    backgroundColor: "blue",
+    backgroundColor: Colors["light"].tint,
     zIndex: 3,
   },
   backdrop: {

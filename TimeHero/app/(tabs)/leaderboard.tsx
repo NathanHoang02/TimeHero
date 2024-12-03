@@ -61,6 +61,8 @@ export default function LeaderboardScreen() {
   const handleGenerateCode = () => {
     const newCode = Math.random().toString(36).substr(2, 6).toUpperCase();
 
+    alert("Join Code: " + newCode)
+
     const leaderboardTarget = {
       userId: $userId ?? "",
       leaderboardJoinCode: newCode,
