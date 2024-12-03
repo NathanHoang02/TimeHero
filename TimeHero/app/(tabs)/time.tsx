@@ -8,6 +8,7 @@ import { RootState, useAppDispatch } from '@/store/store';
 import { fetchEarnedTime, fetchUserInfo, updateEarnedTime } from '@/store/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useStoreRootState } from 'expo-router/build/global-state/router-store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function TimeScreen() {
   // const formatTime = (timeInSeconds: number) => {
@@ -26,6 +27,22 @@ export default function TimeScreen() {
         dispatch(fetchUserInfo($userId));
     }
   }, [dispatch, $userId]);
+
+  useEffect(() => {
+    const getUserIdFromStorage = async () => {
+      try {
+        const storedUserId = await AsyncStorage.getItem('userId');
+        if (storedUserId) {
+          // If a userId is found, dispatch the fetchUserInfo action
+          dispatch(fetchUserInfo(storedUserId));
+        }
+      } catch (error) {
+        console.error('Failed to load userId from AsyncStorage:', error);
+      }
+    };
+
+    getUserIdFromStorage();
+  }, [dispatch]);
 
   const handleTimeUpdate = async (newTime: number) => {
     if ($userId){

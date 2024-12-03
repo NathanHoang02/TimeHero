@@ -1,47 +1,102 @@
-// src/screens/TasksScreen.tsx
-import { useAppDispatch, RootState } from "@/store/store";
-import { fetchAvailableTasks } from "@/store/taskSlice";
-import React, { useEffect } from "react";
-import {
-  View,
-  Text,
-  FlatList,
-  ActivityIndicator,
-  StyleSheet,
-} from "react-native";
+import React, { useEffect, useMemo, useState } from "react";
+import { View, Text, FlatList, Button, StyleSheet } from "react-native";
 import { useSelector } from "react-redux";
+import { useAppDispatch, RootState } from "@/store/store";
+import TaskModal from "@/components/common/TaskModal";
+import { TaskType } from "@/constants/TaskType";
+import { fetchCompletedTasks } from "@/store/userSlice";
+import { fetchAvailableTasks, setActiveFilter } from "@/store/taskSlice"; // Import the action to set active filter
 
 const TasksScreen = () => {
-  const $tasks = useSelector((state: RootState) => state.tasks.tasks); // Select the tasks from Redux
+  const $tasks = useSelector((state: RootState) => state.tasks.tasks);
+  const $userId = useSelector((state: RootState) => state.user.userInfo?.id);
+  const $userCompletedTasks = useSelector(
+    (state: RootState) => state.user.completedTasks
+  );
+  const activeTypeFilter = useSelector(
+    (state: RootState) => state.tasks.activeFilter
+  );
   const dispatch = useAppDispatch();
+  const [isModalVisible, setModalVisible] = useState<boolean>(false);
+  const [selectedTask, setSelectedTask] = useState<any>(null);
 
   useEffect(() => {
-    dispatch(fetchAvailableTasks()); // Dispatch action to fetch tasks from the API
-  }, []);
+    dispatch(fetchAvailableTasks());
+    if ($userId) dispatch(fetchCompletedTasks($userId));
+  }, [dispatch, $userId]);
+
+  const finalizedTaskList = useMemo(() => {
+    const nonCompletedTasks = $tasks.filter(
+      (task) => !$userCompletedTasks.includes(task.id)
+    );
+
+    const matchingActiveTypeFilter =
+      activeTypeFilter && activeTypeFilter !== TaskType.None
+        ? nonCompletedTasks.filter((task) => task.taskType === activeTypeFilter)
+        : nonCompletedTasks;
+
+    return matchingActiveTypeFilter;
+  }, [$tasks, activeTypeFilter, $userCompletedTasks]);
+
+  const openModal = (task: any) => {
+    setSelectedTask(task);
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+    setSelectedTask(null);
+  };
+
+  // Helper function to convert seconds into hours, minutes, seconds
+  const formatTime = (seconds: number) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = seconds % 60;
+    return `${hours > 0 ? hours + "h" : ""} ${
+      minutes > 0 ? minutes + "m" : ""
+    } ${remainingSeconds > 0 ? remainingSeconds + "s" : ""}`;
+  };
+
+  function shuffleArray<T>(array: T[]): T[] {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1)); // Random index from 0 to i
+      [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+    }
+    return array;
+  }
 
   return (
-    <View style={styles.container} id="checkforidhere">
+    <View style={styles.container}>
+      {isModalVisible && selectedTask && (
+        <TaskModal
+          task={selectedTask}
+          isVisible={isModalVisible}
+          onClose={closeModal}
+        />
+      )}
+      <Text style={styles.listLabel}>Task List: </Text>
       <FlatList
-        data={$tasks} // Use the tasks fetched from Redux
+        data={shuffleArray(finalizedTaskList)} // Use the filtered tasks
         keyExtractor={(item) => item.id.toString()} // Ensure `id` is a string for FlatList keyExtractor
         renderItem={({ item }) => (
           <View style={styles.taskItem}>
             <Text style={styles.label}>{item.label}</Text>
-            <Text>Type: {item.taskType}</Text>
-            <Text>Metric: {item.metric ?? "N/A"}</Text>
-            <Text>Time: {item.time ? `${item.time} seconds` : "N/A"}</Text>
-            {item.steps && item.steps.length > 0 && (
-              <View>
-                <Text style={styles.stepsLabel}>Steps:</Text>
-                {item.steps.map((step, index) => (
-                  <Text key={index}>
-                    {index + 1}. {step}
-                  </Text>
-                ))}
-              </View>
-            )}
+            <Text>
+              <Text style={styles.boldText}>Type:</Text> {item.taskType}
+            </Text>
+
+            <Text>
+              <Text style={styles.boldText}>Screen Time Rewarded:</Text>{" "}
+              {item.time ? formatTime(item.time) : "N/A"}
+            </Text>
+
+            <Button title="Select Task" onPress={() => openModal(item)} />
           </View>
         )}
+        ListEmptyComponent={
+          <Text style={styles.error}>No tasks available.</Text>
+        }
       />
     </View>
   );
@@ -57,6 +112,7 @@ const styles = StyleSheet.create({
     padding: 16,
     marginVertical: 8,
     borderRadius: 8,
+    gap: 10,
     backgroundColor: "#f9f9f9",
     borderColor: "#ddd",
     borderWidth: 1,
@@ -64,6 +120,13 @@ const styles = StyleSheet.create({
   label: {
     fontWeight: "bold",
     fontSize: 16,
+  },
+  listLabel: {
+    fontWeight: "bold",
+    fontSize: 24,
+  },
+  boldText: {
+    fontWeight: "bold", // Makes "Type:" and "Screen Time Rewarded:" labels bold
   },
   stepsLabel: {
     fontWeight: "bold",
