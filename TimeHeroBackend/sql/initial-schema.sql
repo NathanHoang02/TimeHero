@@ -1,6 +1,6 @@
--- Create User table
 CREATE TABLE User (
     id TEXT PRIMARY KEY,                  -- GUID for the user
+    username TEXT NOT NULL,               -- Username for the user
     completedTaskIDs TEXT,                -- JSON array of completed task GUIDs
     accumulatedTime INTEGER NOT NULL,     -- Accumulated screen time
     depositedTime INTEGER NOT NULL,       -- Deposited time
@@ -8,6 +8,7 @@ CREATE TABLE User (
     activeTaskIDs TEXT,                   -- JSON array of active task GUIDs
     FOREIGN KEY (leaderboardID) REFERENCES Leaderboard(id)
 );
+
 
 -- Create Task table
 CREATE TABLE Task (

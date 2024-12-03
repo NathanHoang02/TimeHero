@@ -1,20 +1,29 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { StyleSheet, View, Button, Modal, Text, TouchableOpacity, TextInput, Dimensions } from 'react-native';
-import React, { useState } from 'react';
+import { StyleSheet, View, Button, Modal, Text, TouchableOpacity, TextInput, Dimensions} from 'react-native';
+import React, { useEffect, useMemo, useState } from 'react';
+
 
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import Leaderboard from '@/components/leaderboard';
 import { JoinCodeInput } from '@/components/JoinCodeInput';
 import { GenerateCodeSection } from '@/components/GenerateCodeSection';
-
-const { width } = Dimensions.get('window');
-const scale = width / 375; 
-const scaledSize = (size) => size * scale;
+import { RootState, useAppDispatch } from '@/store/store';
+import { fetchLeaderboard } from '@/store/leaderboardSlice';
+import { useSelector } from 'react-redux';
+import { joinLeaderboard } from '@/store/userSlice';
 
 export default function LeaderboardScreen() {
   const [isModalVisible, setModalVisible] = useState(false);
   const [joinCode, setJoinCode] = useState('');
 
+  const dispatch = useAppDispatch();
+
+  const $userLeaderboardId = useSelector((state: RootState) => state.user.userInfo?.leaderboardID) ?? null;
+  const $userId = useSelector((state: RootState) => state.user.userInfo?.id) ?? null;
+  const $leaderboardUsers = useSelector((state: RootState) => state.leaderboard.users);
+  
+
+  const $userAccumulatedTime = useSelector((state: RootState) => state.user.userInfo?.accumulatedTime) ?? null;
   const handleJoinLeaderboard = () => setModalVisible(true);
   const closeModal = () => setModalVisible(false);
 
@@ -25,8 +34,14 @@ export default function LeaderboardScreen() {
 
   const handleGenerateCode = () => {
     const newCode = Math.random().toString(36).substr(2, 6).toUpperCase();
-    console.log("Generated Code:", newCode);
     alert(`Generated Code: ${newCode}`); // Or handle display as needed
+
+    const leaderboardTarget = {
+      userId: $userId ?? '',
+      leaderboardId: newCode
+    }
+
+    dispatch(joinLeaderboard(leaderboardTarget))
   };
 
   type Player = {
@@ -34,26 +49,28 @@ export default function LeaderboardScreen() {
     name: string;
     score: number;
   };
-  
-  const players: Player[] = [
-    { id: 1, name: 'Alice', score: 120 },
-    { id: 2, name: 'Bob', score: 95 },
-    { id: 3, name: 'Charlie', score: 110 },
-    { id: 4, name: 'David', score: 85 },
-    { id: 5, name: 'Eve', score: 130 },
-    { id: 6, name: 'Frank', score: 90 },
-    { id: 7, name: 'Grace', score: 105 },
-    { id: 8, name: 'Hank', score: 75 },
-    { id: 9, name: 'Ivy', score: 115 },
-    { id: 10, name: 'Jack', score: 100 },
-  ];
+
+  const playersOnLeaderboard: Player[] = useMemo(() => {
+    return $leaderboardUsers.map((user) => {
+      return {
+        id: Number.parseInt(user.id),
+        name: user.username ?? 'test',
+        score: user.accumulatedTime / 1000,
+      }
+    })
+  }, [$leaderboardUsers])
+
+  useEffect(() => {
+    if($userLeaderboardId) {
+      dispatch(fetchLeaderboard($userLeaderboardId));
+    }
+  }, [])
   
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={<Ionicons size={scaledSize(310)} name="trophy" style={styles.headerImage} />}>
-      <Text style={styles.title}>Leaderboard</Text>
-      <Leaderboard players={players}/>
+      headerImage={<Ionicons size={310} name="trophy" style={styles.headerImage} />}>
+      <Leaderboard players={playersOnLeaderboard}/>
       <View style={styles.buttonContainer}>
         <Button title="Join Leaderboard" onPress={handleJoinLeaderboard} />
       </View>
@@ -86,6 +103,12 @@ export default function LeaderboardScreen() {
     </ParallaxScrollView>
   );
 }
+
+
+
+const { width } = Dimensions.get('window');
+const scale = width / 375; 
+const scaledSize = (size: number) => size * scale;
 
 const styles = StyleSheet.create({
   title: {
