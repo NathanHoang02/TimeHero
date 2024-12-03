@@ -49,8 +49,13 @@ export default function LeaderboardScreen() {
       leaderboardJoinCode: joinCode,
     };
 
-    dispatch(joinLeaderboard(leaderboardTarget));
-    dispatch(fetchUserInfo(leaderboardTarget.userId));
+    dispatch(joinLeaderboard(leaderboardTarget))
+      .then(() => {
+        dispatch(fetchUserInfo(leaderboardTarget.userId));
+      })
+      .then(() => {
+        if ($userLeaderboardId) dispatch(fetchLeaderboard($userLeaderboardId));
+      });
   };
 
   const handleGenerateCode = () => {
@@ -61,8 +66,13 @@ export default function LeaderboardScreen() {
       leaderboardJoinCode: newCode,
     };
 
-    dispatch(joinLeaderboard(leaderboardTarget));
-    dispatch(fetchUserInfo(leaderboardTarget.userId));
+    dispatch(joinLeaderboard(leaderboardTarget))
+      .then(() => {
+        dispatch(fetchUserInfo(leaderboardTarget.userId));
+      })
+      .then(() => {
+        if ($userLeaderboardId) dispatch(fetchLeaderboard($userLeaderboardId));
+      });
   };
 
   type Player = {
@@ -132,30 +142,28 @@ export default function LeaderboardScreen() {
   );
 }
 
-
-
-const { width } = Dimensions.get('window');
-const scale = width / 375; 
+const { width } = Dimensions.get("window");
+const scale = width / 375;
 const scaledSize = (size: number) => size * scale;
 
 const styles = StyleSheet.create({
   title: {
     fontSize: scaledSize(40),
-    fontWeight: 'bold',
-    color:'#c70a29',
-    textAlign: 'center',
+    fontWeight: "bold",
+    color: "#c70a29",
+    textAlign: "center",
     marginBottom: scaledSize(16),
   },
   headerImage: {
-    color: '#FFFF00',
+    color: "#FFFF00",
     bottom: -scaledSize(90),
     left: -scaledSize(35),
-    position: 'absolute',
+    position: "absolute",
   },
   buttonContainer: {
     padding: scaledSize(16),
     marginTop: scaledSize(20),
-    alignSelf: 'center',
+    alignSelf: "center",
   },
   modalBackground: {
     flex: 1,
@@ -164,21 +172,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalContainer: {
-    width: '90%',
-    backgroundColor: '#fff',
+    width: "90%",
+    backgroundColor: "#fff",
     padding: scaledSize(20),
     borderRadius: 10,
     alignItems: "center",
   },
   closeIcon: {
-    position: 'absolute',
+    position: "absolute",
     top: scaledSize(10),
     right: scaledSize(10),
   },
   modalTitle: {
     fontSize: scaledSize(20),
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontWeight: "bold",
+    textAlign: "center",
     marginBottom: scaledSize(20),
   },
   rowContainer: {
@@ -189,8 +197,8 @@ const styles = StyleSheet.create({
   },
   verticalDivider: {
     width: 1,
-    height: '100%',
-    backgroundColor: '#ccc',
+    height: "100%",
+    backgroundColor: "#ccc",
     marginHorizontal: scaledSize(10),
   },
 });
