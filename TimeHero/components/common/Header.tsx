@@ -13,7 +13,6 @@ const Header = () => {
           resizeMode="cover"
         />
       </View>
-      {/* Black separator line */}
       <View style={styles.infoRow}>
         <View style={styles.infoColumn}>
           <Text style={styles.infoText}>Time Earned:</Text>
@@ -45,14 +44,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingTop: height * 0.01,
-    width: "100%", // Full width of the screen
-    paddingHorizontal: "5%", // Adjust side padding
+    width: "100%", 
+    paddingHorizontal: "5%", 
   },
   topSection: {
-    flexDirection: "row", // Align title and logo in a row
-    justifyContent: "space-between", // Push "TimeHero" to the left and center the logo
+    flexDirection: "row", 
+    justifyContent: "space-between", 
     alignItems: "center",
-    width: "100%", // Ensure it spans the full width of the screen
+    width: "100%", 
   },
   image: {
     width: width * 0.2,
@@ -65,50 +64,50 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   separator: {
-    width: "100%", // Full width
-    height: 2, // Thin line
-    backgroundColor: "black", // Black color for the line
-    marginVertical: 10, // Some space around the separator
+    width: "100%", 
+    height: 2, 
+    backgroundColor: "black", 
+    marginVertical: 10, 
   },
   infoColumn: {
-    justifyContent: "center", // Center the content vertically in the column
-    alignItems: "flex-start", // Align items to the left
+    justifyContent: "center", 
+    alignItems: "flex-start", 
   },
   infoRow: {
-    flexDirection: "row", // Row layout for both texts
-    justifyContent: "space-between", // Space them on opposite ends
-    alignItems: "center", // Align them vertically
-    width: "100%", // Make the row span the full width
-    paddingHorizontal: "5%", // Add padding on both sides
+    flexDirection: "row", 
+    justifyContent: "space-between", 
+    alignItems: "center", 
+    width: "100%", 
+    paddingHorizontal: "5%", 
   },
   infoText: {
-    fontSize: 12, // Smaller text size
-    color: "gray", // Text color is gray
+    fontSize: 12, 
+    color: "gray", 
     fontWeight: "600",
   },
   infoValue: {
-    fontSize: 14, // Slightly larger font size for the value
-    color: "black", // Text color is black
-    fontWeight: "bold", // Make it bold for emphasis
-    marginTop: 2, // Add some space below "Time Earned:"
+    fontSize: 14, 
+    color: "black", 
+    fontWeight: "bold", 
+    marginTop: 2, 
   },
   progressContainer: {
-    flexDirection: "row", // Align CircularProgressBar and label in a row
-    alignItems: "center", // Vertically center both elements
+    flexDirection: "row", 
+    alignItems: "center", 
   },
   percentageText: {
-    marginLeft: 10, // Space between the progress bar and percentage text
+    marginLeft: 10, 
     fontSize: 14,
     color: "black",
     fontWeight: "bold",
   },
   activeTasksTitle: {
-    fontSize: 18, // Larger font size for the title
-    fontWeight: "bold", // Make the title bold
-    color: "black", // Black text color
-    textAlign: "left", // Align the title to the left
-    width: "100%", // Span full width
-    marginTop: 10, // Add some space above the title
+    fontSize: 18, 
+    fontWeight: "bold", 
+    color: "black", 
+    textAlign: "left", 
+    width: "100%", 
+    marginTop: 10, 
     marginLeft: 30,
   },
 });
