@@ -2,7 +2,11 @@ import React from "react";
 import { Dimensions, Image, StyleSheet, View, Text } from "react-native";
 import CircularProgressBar from "@/components/common/CircularProgressBar";
 
-const Header = () => {
+type HeaderProps = {
+  renderQuickDashboard? : boolean
+}
+
+const Header = ({renderQuickDashboard}: HeaderProps ) => {
   return (
     <View style={styles.container}>
       <View style={styles.topSection}>
@@ -13,7 +17,7 @@ const Header = () => {
           resizeMode="cover"
         />
       </View>
-      <View style={styles.infoRow}>
+      {renderQuickDashboard && <View style={styles.infoRow}>
         <View style={styles.infoColumn}>
           <Text style={styles.infoText}>Time Earned:</Text>
           <Text style={styles.infoValue}>6 hr 18 min</Text>
@@ -29,9 +33,8 @@ const Header = () => {
             <Text style={styles.percentageText}>75%</Text>
           </View>
         </View>
-      </View>
-      <View style={styles.separator} />
-      <Text style={styles.activeTasksTitle}>Active Tasks</Text>
+      </View>}
+      {renderQuickDashboard && <View style={styles.separator} />}
     </View>
   );
 };
@@ -45,13 +48,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: height * 0.01,
     width: "100%", 
-    paddingHorizontal: "5%", 
+    // paddingHorizontal: "5%", 
   },
   topSection: {
     flexDirection: "row", 
     justifyContent: "space-between", 
     alignItems: "center",
     width: "100%", 
+    paddingHorizontal: "2%", 
   },
   image: {
     width: width * 0.2,
@@ -65,8 +69,8 @@ const styles = StyleSheet.create({
   },
   separator: {
     width: "100%", 
-    height: 2, 
-    backgroundColor: "black", 
+    height: 1.5, 
+    backgroundColor: "grey", 
     marginVertical: 10, 
   },
   infoColumn: {
@@ -81,12 +85,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: "5%", 
   },
   infoText: {
-    fontSize: 12, 
+    fontSize: 18, 
     color: "gray", 
     fontWeight: "600",
   },
   infoValue: {
-    fontSize: 14, 
+    fontSize: 22, 
     color: "black", 
     fontWeight: "bold", 
     marginTop: 2, 
@@ -97,7 +101,7 @@ const styles = StyleSheet.create({
   },
   percentageText: {
     marginLeft: 10, 
-    fontSize: 14,
+    fontSize: 22,
     color: "black",
     fontWeight: "bold",
   },
