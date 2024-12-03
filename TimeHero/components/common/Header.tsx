@@ -1,6 +1,6 @@
 import React from "react";
 import { Dimensions, Image, StyleSheet, View, Text } from "react-native";
-
+import CircularProgressBar from "@/components/common/CircularProgressBar";
 const Header = () => {
   return (
     <View style={styles.container}>
@@ -12,20 +12,28 @@ const Header = () => {
           resizeMode="cover"
         />
       </View>
+      {/* Black separator line */}
       <View style={styles.infoRow}>
-        <Text style={styles.infoText}>Time Earned:</Text>
-        <Text style={styles.infoValue}>6 hr 18 min</Text>
-        <Text style={styles.infoText}>Percent of Completion:</Text>
+        <View style={styles.infoColumn}>
+          <Text style={styles.infoText}>Time Earned:</Text>
+          <Text style={styles.infoValue}>6 hr 18 min</Text>
+        </View>
+        <View style={styles.infoColumn}>
+          <Text style={styles.infoText}>Percent of Completion:</Text>
+          <CircularProgressBar completion={75} size={30} hideCenterLabel={false} />
+        </View>
       </View>
+      <View style={styles.separator} />
     </View>
   );
 };
 
 
+
 const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
-container: {
+  container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
@@ -49,12 +57,21 @@ container: {
     color: "black",
     fontWeight: "bold",
   },
+  separator: {
+    width: "100%", // Full width
+    height: 2, // Thin line
+    backgroundColor: "black", // Black color for the line
+    marginVertical: 10, // Some space around the separator
+  },
+  infoColumn: {
+    justifyContent: "center", // Center the content vertically in the column
+    alignItems: "flex-start", // Align items to the left
+  },
   infoRow: {
     flexDirection: "row", // Row layout for both texts
     justifyContent: "space-between", // Space them on opposite ends
     alignItems: "center", // Align them vertically
     width: "100%", // Make the row span the full width
-    marginTop: -5, // Move closer to the top section
     paddingHorizontal: "5%", // Add padding on both sides
   },
   infoText: {

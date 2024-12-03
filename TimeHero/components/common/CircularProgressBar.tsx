@@ -9,7 +9,7 @@ interface CircularProgressBarProps {
 }
 
 const CircularProgressBar: React.FC<CircularProgressBarProps> = ({ completion = 0, size = 120, hideCenterLabel = false }) => {
-  const strokeWidth = 10; // Thickness of the circle
+  const strokeWidth = 5; // Thickness of the circle
   const radius = (size - strokeWidth) / 2; // Radius of the circle
   const circumference = 2 * Math.PI * radius; // Circumference of the circle
   const progress = (completion / 100) * circumference; // Length of the filled part
