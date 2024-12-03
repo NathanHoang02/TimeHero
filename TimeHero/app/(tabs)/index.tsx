@@ -12,11 +12,11 @@ import { ID_MAP } from '@/constants/ID_MAP';
 
 export default function HomeScreen() {
   const dispatch = useAppDispatch();
-  const $userId = useSelector((state: RootState) => state.user.userInfo?.id) ?? ID_MAP['user'];
+  const $userId = useSelector((state: RootState) => state.user.userInfo?.id);
 
 
   useEffect(() => {
-    dispatch(fetchUserInfo($userId))
+    if ($userId)dispatch(fetchUserInfo($userId))
   }, [])
 
 

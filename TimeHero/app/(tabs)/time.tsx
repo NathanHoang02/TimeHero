@@ -1,16 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect  } from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import HandleRedeemButton from '@/components/handleRedeemButton';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
+import { RootState, useAppDispatch } from '@/store/store';
+import { fetchEarnedTime, fetchUserInfo, updateEarnedTime } from '@/store/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { useStoreRootState } from 'expo-router/build/global-state/router-store';
+
 export default function TimeScreen() {
-  const [totalTime, setTotalTime] = useState(20000);
+  // const formatTime = (timeInSeconds: number) => {
+  //   const hours = Math.floor(timeInSeconds / 3600);
+  //   const minutes = Math.floor((timeInSeconds % 3600) / 60);
+  //   return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+  // };
+
+  const dispatch = useAppDispatch();
+
+  const $userId = useSelector((state: RootState) => state.user.userId);
+  const $earnedTime = useSelector((state: RootState) => state.user.userInfo?.accumulatedTime) ?? 0;
+
+  useEffect(() => {
+    if ($userId) {
+        dispatch(fetchUserInfo($userId));
+    }
+  }, [dispatch, $userId]);
+
+  const handleTimeUpdate = async (newTime: number) => {
+    if ($userId){
+      await dispatch(updateEarnedTime({userId: $userId, newTime}));
+      dispatch(fetchEarnedTime($userId));
+    }
+  };
 
   const formatTime = (timeInSeconds: number) => {
     const hours = Math.floor(timeInSeconds / 3600);
     const minutes = Math.floor((timeInSeconds % 3600) / 60);
-    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+    return `${String(hours).padStart(2, '0')}hr :${String(minutes).padStart(2, '0')}mins`;
   };
 
   return (
@@ -21,11 +48,11 @@ export default function TimeScreen() {
       <Text style={styles.title}>Time Earned</Text>
 
       <View style={styles.timerBackground}>
-        <Text style={styles.timerText}>{formatTime(totalTime)}</Text>
+        <Text style={styles.timerText}>{formatTime($earnedTime ?? 0)}</Text>
       </View>
 
       <View style={styles.buttonContainer}>
-        <HandleRedeemButton totalTime={totalTime} setTotalTime={setTotalTime} />
+        <HandleRedeemButton totalTime={$earnedTime} onTimeUpdate={handleTimeUpdate}/>
       </View>
     </ParallaxScrollView>
   );

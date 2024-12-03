@@ -3,4 +3,4 @@
 
 # Ignore node_modules directory
 node_modules/
-sqlite/timeHero.db
+sqlite/timehero.db

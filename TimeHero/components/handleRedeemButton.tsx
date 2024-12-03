@@ -2,12 +2,27 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Modal, TextInput, StyleSheet } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-export default function HandleRedeemButton({ totalTime, setTotalTime }: { totalTime: number; setTotalTime: (time: number) => void }) {
+import { RootState, useAppDispatch } from '@/store/store';
+import { fetchEarnedTime, fetchUserInfo } from '@/store/userSlice';
+import { useSelector } from 'react-redux';
+
+
+export default function HandleRedeemButton({ totalTime, onTimeUpdate, }: { totalTime: number; onTimeUpdate: (newTime: number) => Promise<void>;}) {
   const [isModalVisible, setModalVisible] = useState(false);
-  const [isModalTwoVisible, setModalTwoVisible] = useState(false);
+  // const [isModalTwoVisible, setModalTwoVisible] = useState(false);
   const [pendingModal2, setPendingModal2] = useState(false);
   const [redeemTime, setRedeemTime] = useState('');
-  const [countdownTime, setCountdownTime] = useState(0);
+  // const [countdownTime, setCountdownTime] = useState(0);
+  const [currentTotalTime, setCurrentTotalTime] = useState(totalTime);
+
+  const $userId = useSelector((state: RootState) => state.user.userId);
+  const $earnedTime = useSelector((state: RootState) => state.user.userInfo?.accumulatedTime) ?? 0;
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    setCurrentTotalTime(totalTime);
+  }, [totalTime]);
 
   const openModal = () => setModalVisible(true);
   const closeModal = () => {
@@ -16,55 +31,72 @@ export default function HandleRedeemButton({ totalTime, setTotalTime }: { totalT
   };
 
   const openModal2 = () => {
-    setModalTwoVisible(true);
+    //setModalTwoVisible(true);
     setPendingModal2(false);
   };
 
-  const closeModal2 = () => setModalTwoVisible(false);
+  //const closeModal2 = () => setModalTwoVisible(false);
 
-  const handleRedeemConfirm = () => {
+const handleRedeemConfirm = async () => {
     const redeemMinutes = parseInt(redeemTime) || 0;
     const redeemSeconds = redeemMinutes * 60;
 
-    if (redeemSeconds > 0 && redeemSeconds <= totalTime) {
-      setTotalTime(totalTime - redeemSeconds);
-      setCountdownTime(redeemSeconds); // Set the countdown time
-      closeModal();
+    if (redeemSeconds > 0 && redeemSeconds <= currentTotalTime) {
+        const updatedTime = currentTotalTime - redeemSeconds;
+        setCurrentTotalTime(updatedTime);
+
+        await onTimeUpdate(updatedTime);
+
+        if($userId){
+          dispatch(fetchUserInfo($userId));
+        }
+        setModalVisible(false);
     } else {
-      alert('Invalid amount. Please enter a valid time to redeem.');
+        alert('Invalid amount. Please enter a valid time to redeem.');
     }
     setRedeemTime('');
-  };
+};
 
-  const handleRedeemAll = () => {
-    setCountdownTime(totalTime); // Set countdown to all available time
-    setTotalTime(0);
-    closeModal();
-  };
+const handleRedeemAll = async () => {
+  if (currentTotalTime <= 0) {
+    alert('Invalid amount.');
+    return;
+  }
+
+  setCurrentTotalTime(0); 
+
+  await onTimeUpdate(0);
+  if($userId){
+    dispatch(fetchEarnedTime($userId));
+  }
+
+  closeModal();
+};
+
 
   // Countdown logic for Modal 2
-  useEffect(() => {
-    let timer: NodeJS.Timeout | undefined;
+  // useEffect(() => {
+  //   let timer: NodeJS.Timeout | undefined;
 
-    if (countdownTime > 0) {
-      timer = setInterval(() => {
-        setCountdownTime((prevTime) => prevTime - 1);
-      }, 1000);
-    } else if (countdownTime === 0 && isModalTwoVisible) {
-      clearInterval(timer);
-      setModalTwoVisible(false); // Close the modal when the timer ends
-    }
+  //   if (countdownTime > 0) {
+  //     timer = setInterval(() => {
+  //       setCountdownTime((prevTime) => prevTime - 1);
+  //     }, 1000);
+  //   } else if (countdownTime === 0 && isModalTwoVisible) {
+  //     clearInterval(timer);
+  //     setModalTwoVisible(false); // Close the modal when the timer ends
+  //   }
 
-    return () => {
-      if (timer) clearInterval(timer);
-    };
-  }, [countdownTime, isModalTwoVisible]);
+  //   return () => {
+  //     if (timer) clearInterval(timer);
+  //   };
+  // }, [countdownTime, isModalTwoVisible]);
 
-  const formatTime = (time: number) => {
-    const minutes = Math.floor(time / 60);
-    const seconds = time % 60;
-    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-  };
+  // const formatTime = (time: number) => {
+  //   const minutes = Math.floor(time / 60);
+  //   const seconds = time % 60;
+  //   return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  // };
 
   return (
     <>
@@ -105,7 +137,7 @@ export default function HandleRedeemButton({ totalTime, setTotalTime }: { totalT
         </View>
       </Modal>
 
-      <Modal visible={isModalTwoVisible} transparent={true} animationType="fade">
+      {/* <Modal visible={isModalTwoVisible} transparent={true} animationType="fade">
         <View style={styles.modalBackground}>
           <View style={styles.modalTwoContainer}>
             <Text style={styles.modalTwoTitle}>Countdown Timer</Text>
@@ -115,7 +147,7 @@ export default function HandleRedeemButton({ totalTime, setTotalTime }: { totalT
             </TouchableOpacity>
           </View>
         </View>
-      </Modal>
+      </Modal> */}
     </>
   );
 }
