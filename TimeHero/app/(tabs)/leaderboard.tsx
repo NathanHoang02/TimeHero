@@ -1,51 +1,72 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { StyleSheet, View, Button, Modal, Text, TouchableOpacity, TextInput, Dimensions} from 'react-native';
-import React, { useEffect, useMemo, useState } from 'react';
+import Ionicons from "@expo/vector-icons/Ionicons";
+import {
+  StyleSheet,
+  View,
+  Button,
+  Modal,
+  Text,
+  TouchableOpacity,
+  TextInput,
+  Dimensions,
+} from "react-native";
+import React, { useEffect, useMemo, useState } from "react";
 
-
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import Leaderboard from '@/components/leaderboard';
-import { JoinCodeInput } from '@/components/JoinCodeInput';
-import { GenerateCodeSection } from '@/components/GenerateCodeSection';
-import { RootState, useAppDispatch } from '@/store/store';
-import { fetchLeaderboard } from '@/store/leaderboardSlice';
-import { useSelector } from 'react-redux';
-import { joinLeaderboard } from '@/store/userSlice';
+import ParallaxScrollView from "@/components/ParallaxScrollView";
+import Leaderboard from "@/components/leaderboard";
+import { JoinCodeInput } from "@/components/JoinCodeInput";
+import { GenerateCodeSection } from "@/components/GenerateCodeSection";
+import { RootState, useAppDispatch } from "@/store/store";
+import { fetchLeaderboard } from "@/store/leaderboardSlice";
+import { useSelector } from "react-redux";
+import { fetchUserInfo, joinLeaderboard } from "@/store/userSlice";
 
 export default function LeaderboardScreen() {
   const [isModalVisible, setModalVisible] = useState(false);
-  const [joinCode, setJoinCode] = useState('');
+  const [joinCode, setJoinCode] = useState("");
 
   const dispatch = useAppDispatch();
 
-  const $userLeaderboardId = useSelector((state: RootState) => state.user.userInfo?.leaderboardID) ?? null;
-  const $userId = useSelector((state: RootState) => state.user.userInfo?.id) ?? null;
-  const $leaderboardUsers = useSelector((state: RootState) => state.leaderboard.users);
-  
+  const $userLeaderboardId =
+    useSelector((state: RootState) => state.user.userInfo?.leaderboardID) ??
+    null;
+  const $userId =
+    useSelector((state: RootState) => state.user.userInfo?.id) ?? null;
+  const $leaderboardUsers = useSelector(
+    (state: RootState) => state.leaderboard.users
+  );
 
-  const $userAccumulatedTime = useSelector((state: RootState) => state.user.userInfo?.accumulatedTime) ?? null;
+  const $userAccumulatedTime =
+    useSelector((state: RootState) => state.user.userInfo?.accumulatedTime) ??
+    null;
   const handleJoinLeaderboard = () => setModalVisible(true);
   const closeModal = () => setModalVisible(false);
 
   const handleJoin = () => {
-    console.log("Join Code Entered:", joinCode);
-    setModalVisible(false); 
+    setModalVisible(false);
+
+    const leaderboardTarget = {
+      userId: $userId ?? "",
+      leaderboardJoinCode: joinCode,
+    };
+
+    dispatch(joinLeaderboard(leaderboardTarget));
+    dispatch(fetchUserInfo(leaderboardTarget.userId));
   };
 
   const handleGenerateCode = () => {
     const newCode = Math.random().toString(36).substr(2, 6).toUpperCase();
-    alert(`Generated Code: ${newCode}`); // Or handle display as needed
 
     const leaderboardTarget = {
-      userId: $userId ?? '',
-      leaderboardId: newCode
-    }
+      userId: $userId ?? "",
+      leaderboardJoinCode: newCode,
+    };
 
-    dispatch(joinLeaderboard(leaderboardTarget))
+    dispatch(joinLeaderboard(leaderboardTarget));
+    dispatch(fetchUserInfo(leaderboardTarget.userId));
   };
 
   type Player = {
-    id: number;
+    id: string;
     name: string;
     score: number;
   };
@@ -53,24 +74,27 @@ export default function LeaderboardScreen() {
   const playersOnLeaderboard: Player[] = useMemo(() => {
     return $leaderboardUsers.map((user) => {
       return {
-        id: Number.parseInt(user.id),
-        name: user.username ?? 'test',
+        id: user.id,
+        name: user.username ?? "test",
         score: user.accumulatedTime / 1000,
-      }
-    })
-  }, [$leaderboardUsers])
+      };
+    });
+  }, [$leaderboardUsers]);
 
   useEffect(() => {
-    if($userLeaderboardId) {
+    if ($userLeaderboardId) {
       dispatch(fetchLeaderboard($userLeaderboardId));
     }
-  }, [])
-  
+  }, [$userLeaderboardId]);
+
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={<Ionicons size={310} name="trophy" style={styles.headerImage} />}>
-      <Leaderboard players={playersOnLeaderboard}/>
+      headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
+      headerImage={
+        <Ionicons size={310} name="trophy" style={styles.headerImage} />
+      }
+    >
+      <Leaderboard players={playersOnLeaderboard} />
       <View style={styles.buttonContainer}>
         <Button title="Join Leaderboard" onPress={handleJoinLeaderboard} />
       </View>
@@ -93,7 +117,11 @@ export default function LeaderboardScreen() {
 
             {/* Row container for "Enter Join Code" and "Generate Join Code" sections */}
             <View style={styles.rowContainer}>
-              <JoinCodeInput joinCode={joinCode} onJoinCodeChange={setJoinCode} onJoinPress={handleJoin} />
+              <JoinCodeInput
+                joinCode={joinCode}
+                onJoinCodeChange={setJoinCode}
+                onJoinPress={handleJoin}
+              />
               <View style={styles.verticalDivider} />
               <GenerateCodeSection onGeneratePress={handleGenerateCode} />
             </View>
@@ -131,16 +159,16 @@ const styles = StyleSheet.create({
   },
   modalBackground: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
   },
   modalContainer: {
     width: '90%',
     backgroundColor: '#fff',
     padding: scaledSize(20),
     borderRadius: 10,
-    alignItems: 'center',
+    alignItems: "center",
   },
   closeIcon: {
     position: 'absolute',
@@ -154,10 +182,10 @@ const styles = StyleSheet.create({
     marginBottom: scaledSize(20),
   },
   rowContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+    justifyContent: "space-between",
   },
   verticalDivider: {
     width: 1,
