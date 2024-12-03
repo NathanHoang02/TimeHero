@@ -35,6 +35,7 @@ export const TutorialProvider: React.FC<TutorialProviderProps> = ({ children }) 
 
     const endTutorial = async () => {
         setTutorialStatus(false);
+        await AsyncStorage.setItem('isFirstTime', 'false');
     };
 
     return (
