@@ -1,4 +1,4 @@
-import { useState, type PropsWithChildren, type ReactElement } from "react";
+import React, { useState, type PropsWithChildren, type ReactElement } from "react";
 import { Easing, StyleSheet, useColorScheme, View } from "react-native";
 import Animated, {
   interpolate,
@@ -25,7 +25,7 @@ type Props = PropsWithChildren<{
 
 const ICONS = {
   [TaskType.PhysicalFitness]: "fitness",
-  [TaskType.MentalHealth]: "medkit",
+  [TaskType.MentalHealth]: "medical",
   [TaskType.Education]: "school",
   [TaskType.Household]: "home",
   [TaskType.Creativity]: "color-palette",
@@ -45,57 +45,55 @@ export default function ParallaxScrollView({
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const scrollOffset = useScrollViewOffset(scrollRef);
 
-  // State for showing/hiding filter buttons
   const [showFilterButtons, setShowFilterButtons] = useState(false);
 
-  const headerAnimatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [
-        {
-          translateY: interpolate(
-            scrollOffset.value,
-            [-HEADER_HEIGHT, 0, HEADER_HEIGHT],
-            [-HEADER_HEIGHT / 2, 0, HEADER_HEIGHT * 0.75]
-          ),
-        },
-        {
-          scale: interpolate(
-            scrollOffset.value,
-            [-HEADER_HEIGHT, 0, HEADER_HEIGHT],
-            [2, 1, 1]
-          ),
-        },
-      ],
-    };
-  });
+  const headerAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [
+      {
+        translateY: interpolate(
+          scrollOffset.value,
+          [-HEADER_HEIGHT, 0, HEADER_HEIGHT],
+          [-HEADER_HEIGHT / 2, 0, HEADER_HEIGHT * 0.75]
+        ),
+      },
+      {
+        scale: interpolate(
+          scrollOffset.value,
+          [-HEADER_HEIGHT, 0, HEADER_HEIGHT],
+          [2, 1, 1]
+        ),
+      },
+    ],
+  }));
 
-  // Function to handle filter change
+  const filterButtonStyle = useAnimatedStyle(() => ({
+    opacity: withSpring(showFilterButtons ? 1 : 0, {
+      damping: 30,
+      stiffness: 200,
+      mass: 1,
+    }),
+    transform: [
+      {
+        translateY: withSpring(showFilterButtons ? 0 : 60, {
+          damping: 30,
+          stiffness: 200,
+          mass: 1,
+        }),
+      },
+    ],
+  }));
+
+  const backdropStyle = useAnimatedStyle(() => ({
+    opacity: withSpring(showFilterButtons ? 0.5 : 0, {
+      damping: 30,
+      stiffness: 200,
+    }),
+  }));
+
   const handleFilterChange = (newFilter: TaskType) => {
-    dispatch(setActiveFilter(newFilter)); // Dispatch the filter action directly from taskSlice
-    setShowFilterButtons(false); // Close filter buttons after selection
+    dispatch(setActiveFilter(newFilter));
+    setShowFilterButtons(false);
   };
-
-  // Animation style for filter buttons
-  const filterButtonStyle = useAnimatedStyle(() => {
-    return {
-      opacity: withSpring(showFilterButtons ? 1 : 0, {
-        damping: 30,
-        stiffness: 200,
-        mass: 1,
-        // easing: Easing.ease,
-      }),
-      transform: [
-        {
-          translateY: withSpring(showFilterButtons ? 0 : 60, {
-            damping: 30,
-            stiffness: 200,
-            mass: 1,
-            // easing: Easing.ease,
-          }),
-        },
-      ],
-    };
-  });
 
   return (
     <ThemedView style={styles.container}>
@@ -114,12 +112,23 @@ export default function ParallaxScrollView({
         </ThemedView>
       </Animated.ScrollView>
 
-      {/* Floating Action Button for setting filter */}
+      {/* Backdrop */}
+      {taskVariant && (
+        <Animated.View
+          style={[
+            styles.backdrop,
+            backdropStyle,
+            { display: showFilterButtons ? "flex" : "none" }, // Hide when inactive
+          ]}
+        />
+      )}
+
+      {/* Floating Action Button */}
       {taskVariant && (
         <FAB
           style={styles.fab}
           icon="filter"
-          onPress={() => setShowFilterButtons(!showFilterButtons)} // Toggle the filter buttons
+          onPress={() => setShowFilterButtons(!showFilterButtons)}
           color="white"
           small
         />
@@ -176,30 +185,32 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   fab: {
-    position: "absolute", // Fixed positioning relative to the container
+    position: "absolute",
     bottom: 16,
     right: 16,
-    backgroundColor: "blue", // Customize the color of the FAB
+    backgroundColor: "blue",
+    zIndex: 3,
   },
   filterButtonsContainer: {
     position: "absolute",
-    bottom: 80, // Just above the FAB
+    bottom: 80,
     right: 16,
-    alignItems: 'flex-end',
+    alignItems: "flex-end",
     gap: 10,
+    zIndex: 3,
   },
   filterButton: {
     alignItems: "center",
+    zIndex: 3,
   },
   filterButtonFAB: {
     marginBottom: 5,
-    backgroundColor: "blue", // Customize the color of the filter button
+    backgroundColor: "blue",
+    zIndex: 3,
   },
-  buttonLabel: {
-    alignItems: "center",
-  },
-  filterButtonLabel: {
-    fontSize: 12,
-    color: "black",
+  backdrop: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "black",
+    zIndex: 1, // Ensure it appears above content but below FABs
   },
 });

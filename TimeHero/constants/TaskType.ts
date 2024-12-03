@@ -1,11 +1,11 @@
 export enum TaskType {
     PhysicalFitness = 'Physical Fitness',
     MentalHealth = 'Mental Health',
-    Education = 'Education',
-    Household = 'Household',
     Creativity = 'Creativity',
-    Social = 'Social',
+    Household = 'Household',
+    Education = 'Education',
     Outdoor = 'Outdoor',
+    Social = 'Social',
     None = 'none',
   }
   
