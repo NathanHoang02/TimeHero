@@ -1,4 +1,5 @@
-const db = require('../config/db');
+const db = require("../config/db");
+const { v4: uuidv4 } = require('uuid'); 
 
 const User = {
   getEarnedScreenTime: (userId) => {
@@ -41,19 +42,61 @@ const User = {
     });
   },
 
-  joinLeaderboard: (userId, leaderboardId) => {
+  joinLeaderboard: (userId, leaderboardJoinCode) => {
     return new Promise((resolve, reject) => {
-      const query = `UPDATE User SET leaderboardID = ? WHERE id = ?`;
-      db.run(query, [leaderboardId, userId], function (err) {
-        if (err) return reject(err);
-        resolve(this.changes);
-      });
+      // First, try to find an existing leaderboard with the given join code
+      const findLeaderboardQuery = `SELECT * FROM Leaderboard WHERE joinCode = ?`;
+      db.get(
+        findLeaderboardQuery,
+        [leaderboardJoinCode],
+        (err, leaderboard) => {
+          if (err) return reject(err);
+
+          if (leaderboard) {
+            // If leaderboard is found, update the user's leaderboardID
+            const updateUserQuery = `UPDATE User SET leaderboardID = ? WHERE id = ?`;
+            db.run(updateUserQuery, [leaderboard.id, userId], function (err) {
+              if (err) return reject(err);
+              resolve({
+                message: "User joined existing leaderboard",
+                changes: this.changes,
+              });
+            });
+          } else {
+            // If leaderboard does not exist, create a new leaderboard
+            const newLeaderboardId = uuidv4(); // Generate a new GUID for the leaderboard
+            const createLeaderboardQuery = `INSERT INTO Leaderboard (id, joinCode, users) VALUES (?, ?, ?)`;
+
+            db.run(
+              createLeaderboardQuery,
+              [newLeaderboardId, leaderboardJoinCode, JSON.stringify([userId])],
+              function (err) {
+                if (err) return reject(err);
+
+                // Update the user's leaderboardID with the newly created leaderboard's id
+                const updateUserQuery = `UPDATE User SET leaderboardID = ? WHERE id = ?`;
+                db.run(
+                  updateUserQuery,
+                  [newLeaderboardId, userId],
+                  function (err) {
+                    if (err) return reject(err);
+                    resolve({
+                      message: "Created new leaderboard and joined",
+                      changes: this.changes,
+                    });
+                  }
+                );
+              }
+            );
+          }
+        }
+      );
     });
   },
 
   getUserInfo: (userId) => {
     return new Promise((resolve, reject) => {
-      const query = `SELECT id, username, completedTaskIDs, accumulatedTime, depositedTime, leaderboardID, activeTaskIDs FROM User WHERE id = ?`;
+      const query = `SELECT * FROM User WHERE id = ?`;
       db.get(query, [userId], (err, row) => {
         if (err) return reject(err);
         resolve(row);

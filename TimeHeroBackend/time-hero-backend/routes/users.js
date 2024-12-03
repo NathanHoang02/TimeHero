@@ -81,11 +81,11 @@ router.put('/:userId/completed', async (req, res) => {
 router.put('/:userId/join-leaderboard', async (req, res) => {
     try {
         const { userId } = req.params;
-        const { leaderboardId } = req.body; // Expecting leaderboardId in the request body
-        if (!leaderboardId) {
-            return res.status(400).json({ error: 'leaderboardId is required' });
+        const { leaderboardJoinCode } = req.body; // Expecting leaderboardId in the request body
+        if (!leaderboardJoinCode) {
+            return res.status(400).json({ error: 'leaderboardJoinCode is required' });
         }
-        const changes = await UserModel.joinLeaderboard(userId, leaderboardId);
+        const changes = await UserModel.joinLeaderboard(userId, leaderboardJoinCode);
         if (changes) {
             res.json({ message: 'Joined leaderboard successfully' });
         } else {

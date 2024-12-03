@@ -49,8 +49,9 @@ export default function TimeScreen() {
 }
 const styles = StyleSheet.create({
   title: {
-    fontSize: 24,
+    fontSize: 40,
     fontWeight: 'bold',
+    color:'#c70a29',
     textAlign: 'center',
     marginBottom: 16,
   },

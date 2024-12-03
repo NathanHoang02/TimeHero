@@ -53,7 +53,7 @@ export const fetchCompletedTasks = createAsyncThunk<string[], string>(
   "users/fetchCompletedTasks",
   async (userId, { rejectWithValue }) => {
     try {
-      const response = await makeApiCall.get(`user/${userId}/completed`);
+      const response = await makeApiCall.get(`users/${userId}/completed`);
       return response.completedTasks;
     } catch (err: any) {
       return rejectWithValue(err.response?.data || err.message);
@@ -66,7 +66,7 @@ export const fetchEarnedTime = createAsyncThunk<number, string>(
   "users/fetchEarnedTime",
   async (userId, { rejectWithValue }) => {
     try {
-      const response = await makeApiCall.get(`/api/user/${userId}/earned-time`);
+      const response = await makeApiCall.get(`users/${userId}/earned-time`);
       return response.earnedTime;
     } catch (err: any) {
       return rejectWithValue(err.response?.data || err.message);
@@ -82,7 +82,7 @@ export const updateEarnedTime = createAsyncThunk<
   "users/updateEarnedTime",
   async ({ userId, newTime }, { rejectWithValue }) => {
     try {
-      await makeApiCall.put(`user/${userId}/earned-time`, { newTime });
+      await makeApiCall.put(`users/${userId}/earned-time`, { newTime });
     } catch (err: any) {
       return rejectWithValue(err.response?.data || err.message);
     }
@@ -97,7 +97,7 @@ export const updateCompletedTasks = createAsyncThunk<
   "users/updateCompletedTasks",
   async ({ userId, taskIds }, { rejectWithValue }) => {
     try {
-      await makeApiCall.put(`/api/user/${userId}/completed`, { taskIds });
+      await makeApiCall.put(`users/${userId}/completed`, { taskIds });
     } catch (err: any) {
       return rejectWithValue(err.response?.data || err.message);
     }
@@ -107,15 +107,15 @@ export const updateCompletedTasks = createAsyncThunk<
 // Async thunk to join a leaderboard
 export const joinLeaderboard = createAsyncThunk<
   string,
-  { userId: string; leaderboardId: string }
+  { userId: string; leaderboardJoinCode: string }
 >(
   "users/joinLeaderboard",
-  async ({ userId, leaderboardId }, { rejectWithValue }) => {
+  async ({ userId, leaderboardJoinCode }, { rejectWithValue }) => {
     try {
       const response = await makeApiCall.put(
-        `/api/user/${userId}/join-leaderboard`,
+        `users/${userId}/join-leaderboard`,
         {
-          leaderboardId,
+          leaderboardJoinCode,
         }
       );
       return response.message;
