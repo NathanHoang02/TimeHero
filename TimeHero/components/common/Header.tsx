@@ -22,12 +22,17 @@ const Header = () => {
         <View style={styles.infoColumn}>
           <Text style={styles.infoText}>Percent of Completion:</Text>
           <View style={styles.progressContainer}>
-            <CircularProgressBar completion={75} size={30} hideCenterLabel={true} />
+            <CircularProgressBar 
+            completion={75} 
+            size={30} 
+            hideCenterLabel={true}
+             />
             <Text style={styles.percentageText}>75%</Text>
           </View>
         </View>
       </View>
       <View style={styles.separator} />
+      <Text style={styles.activeTasksTitle}>Active Tasks</Text>
     </View>
   );
 };
@@ -96,6 +101,15 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "black",
     fontWeight: "bold",
+  },
+  activeTasksTitle: {
+    fontSize: 18, // Larger font size for the title
+    fontWeight: "bold", // Make the title bold
+    color: "black", // Black text color
+    textAlign: "left", // Align the title to the left
+    width: "100%", // Span full width
+    marginTop: 10, // Add some space above the title
+    marginLeft: 30,
   },
 });
 
