@@ -1,5 +1,6 @@
 import CircularProgressBar from "@/components/common/CircularProgressBar";
 import Header from "@/components/common/Header";
+import QuickDashboard from "@/components/PageModules/HomePage/QuickDashboard";
 import React from "react";
 import { Dimensions, Image, Platform, StyleSheet } from "react-native";
 
